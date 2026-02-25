@@ -33,6 +33,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Include DSX2026 static page in artifact
+        run: |
+          mkdir -p dist/assets
+          cp -f DSX2026.html dist/DSX2026.html
+          cp -rf assets/* dist/assets/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
