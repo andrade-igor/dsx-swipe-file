@@ -534,6 +534,74 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  .header-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gold);
+    padding: 16px 28px;
+    min-width: 140px;
+    gap: 4px;
+    align-self: center;
+  }
+
+  .stats-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .stats-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 600px) {
+    .header-stats { align-self: flex-start; }
+  }
+
+  /* COUNTER 3D */
+  .header-counter {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .counter-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--gold);
+    text-shadow:
+      3px 3px 0px #8B5E10,
+      6px 6px 0px #5A3D08,
+      9px 9px 0px rgba(0,0,0,0.4);
+    letter-spacing: -2px;
+  }
+
+  .counter-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    line-height: 1.3;
+    letter-spacing: 3px;
+    color: var(--text);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 600px) {
+    .counter-number { font-size: 64px; }
+    .counter-label { font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -545,6 +613,10 @@
     <p>Os criativos que mais venderam no DSX 2025 — com os ângulos, copies e a lógica por trás de cada um.</p>
   </div>
   
+  <div class="header-counter">
+    <div class="counter-number">39</div>
+    <div class="counter-label">ANÚNCIOS<br>DSX 2025</div>
+  </div>
 </header>
 
 
@@ -669,7 +741,7 @@ ads.forEach((ad, i) => {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-number">0${i+1}</div>
+    <div class="card-number">${i+1 < 10 ? "0"+(i+1) : (i+1)}</div>
     <div class="card-img-wrap">
       <img src="${ad.img}" alt="Anúncio ${i+1}" loading="lazy">
       <div class="card-overlay"><div class="overlay-angle">${ad.angle}</div></div>
@@ -854,7 +926,7 @@ adsEng.forEach((ad, i) => {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-number">0${i+1}</div>
+    <div class="card-number">${i+1 < 10 ? "0"+(i+1) : (i+1)}</div>
     ${ad.format === 'Reels' ? '<div class="format-badge">▶ Reels</div>' : ''}
     <div class="card-img-wrap">
       <img src="${ad.img}" alt="Anúncio Engajamento ${i+1}" loading="lazy">
@@ -1015,7 +1087,7 @@ adsAlc.forEach((ad, i) => {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-number">0${i+1}</div>
+    <div class="card-number">${i+1 < 10 ? "0"+(i+1) : (i+1)}</div>
     ${ad.format === 'Reels' ? '<div class="format-badge">▶ Reels</div>' : ''}
     <div class="card-img-wrap">
       <img src="${ad.img}" alt="Anúncio Alcance ${i+1}" loading="lazy">
@@ -1051,7 +1123,7 @@ adsAlc.forEach((ad, i) => {
     <span class="funnel-step">04</span>
     <div>
       <div class="funnel-title">Leads</div>
-      <div class="funnel-desc">Os criativos usados para capturar contatos e nutrir interesse — pré-lançamento, grupos de WhatsApp e qualificação de público antes da abertura das vendas.</div>
+      <div class="funnel-desc">Os criativos usados para capturar contatos durante todo o período da campanha — do pré-lançamento até o encerramento do evento. Essas campanhas alimentaram o comercial com leads qualificados, que foram responsáveis por uma parte expressiva das vendas através do atendimento direto.</div>
     </div>
   </div>
 </div>
@@ -1209,7 +1281,7 @@ adsLed.forEach((ad, i) => {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-number">0${i+1}</div>
+    <div class="card-number">${i+1 < 10 ? "0"+(i+1) : (i+1)}</div>
     ${ad.format === 'Reels' ? '<div class="format-badge">▶ Reels</div>' : ''}
     <div class="card-img-wrap">
       <img src="${ad.img}" alt="Anúncio Leads ${i+1}" loading="lazy">
