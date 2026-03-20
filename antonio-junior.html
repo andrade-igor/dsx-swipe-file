@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategia de Crescimento — @antonio.lima.junior</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #b8860b;
+  --gold-light: #d4a853;
+  --gold-10: rgba(184,134,11,0.10);
+  --gold-20: rgba(184,134,11,0.20);
+  --gold-30: rgba(184,134,11,0.30);
+  --success: #16a34a;
+  --success-10: rgba(22,163,74,0.10);
+  --danger: #dc2626;
+  --danger-10: rgba(220,38,38,0.10);
+  --fg: #111827;
+  --fg-2: #374151;
+  --fg-3: #6b7280;
+  --fg-muted: #9ca3af;
+  --border: #e5e7eb;
+  --bg: #ffffff;
+  --bg-alt: #f8f9fa;
+  --bg-warm: #f0ebe3;
+  --card: #ffffff;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.03);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.08), 0 12px 48px rgba(0,0,0,0.04);
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--fg);
+  background: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* === SECTIONS === */
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Seções escuras (alternância) */
+section.dark {
+  background: #1e1e1e !important;
+  color: #f0f0f0;
+}
+
+section.dark .section-tag { color: var(--gold-light); }
+section.dark .section-title { color: #ffffff; }
+section.dark .section-subtitle { color: rgba(255,255,255,0.55); }
+section.dark .callout { background: rgba(255,255,255,0.05); border-left-color: var(--gold); color: rgba(255,255,255,0.7); }
+section.dark .callout strong { color: #ffffff; }
+section.dark .stat-card { background: #2a2a2a; border-color: #333; }
+section.dark .stat-card .lbl { color: rgba(255,255,255,0.5); }
+section.dark .stat-card .num { color: #fff; }
+section.dark .stat-card .num.gold { color: var(--gold-light); }
+section.dark .stat-card .num.red { color: #f87171; }
+section.dark .stat-card .num.green { color: #4ade80; }
+section.dark .stat-card .num.muted { color: rgba(255,255,255,0.4); }
+section.dark .vs-card.old { background: linear-gradient(135deg, #2a1a1a, #2d1f1f); border-color: #4a2020; }
+section.dark .vs-card.new { background: linear-gradient(135deg, #1a2a1a, #1f2d1f); border-color: #204a20; }
+section.dark .vs-card li { color: rgba(255,255,255,0.7); border-bottom-color: rgba(255,255,255,0.06); }
+section.dark .bar-track { background: #2a2a2a; border-color: #333; }
+section.dark .bar-item .bar-name { color: rgba(255,255,255,0.5); }
+section.dark .bar-item .bar-value { color: #fff; }
+section.dark .evo-bar .week { color: rgba(255,255,255,0.4); }
+section.dark .line-card { background: #2a2a2a; border-color: #333; }
+section.dark .line-card h4 { color: #fff; }
+section.dark .line-card p { color: rgba(255,255,255,0.6); }
+section.dark .line-card .icon { background: var(--gold-20); color: var(--gold-light); }
+section.dark .avoid-item { background: linear-gradient(135deg, #2a1a1a, #2d1f1f); border-color: #4a2020; }
+section.dark .avoid-item .atitle { color: #f87171; }
+section.dark .avoid-item .adesc { color: rgba(255,255,255,0.5); }
+section.dark .hook-box { background: linear-gradient(135deg, #2a2518, #2d2518); border-color: var(--gold-30); }
+section.dark .hook-box .hook-sub { color: rgba(255,255,255,0.5); }
+section.dark .hook-do { background: linear-gradient(135deg, #1a2a1a, #1f2d1f); border-color: #204a20; }
+section.dark .hook-dont { background: linear-gradient(135deg, #2a1a1a, #2d1f1f); border-color: #4a2020; }
+section.dark .hook-do li, section.dark .hook-dont li { color: rgba(255,255,255,0.7); }
+section.dark .scenario { background: #2a2a2a; border-color: #333; }
+section.dark .scenario .stag { color: rgba(255,255,255,0.4); }
+section.dark .scenario .sdet { color: rgba(255,255,255,0.4); }
+section.dark .scenario.main { background: linear-gradient(135deg, #1a2a1a, #1f2d1f); border-color: #204a20; }
+section.dark .flow-step .fs-num { background: #1e1e1e; }
+section.dark .flow-step .fs-text { color: rgba(255,255,255,0.6); }
+section.dark .big-number .label { color: rgba(255,255,255,0.4); }
+
+section.auto-height {
+  min-height: auto;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+}
+
+.nav-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(150,150,150,0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.nav-dot:hover, .nav-dot.active {
+  background: var(--gold);
+  transform: scale(1.5);
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 1000;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+@supports (animation-timeline: scroll()) {
+  .progress-bar-fill {
+    animation: grow-bar linear;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes grow-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+/* === COMMON === */
+.container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.section-title {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 8px;
+  line-height: 1.12;
+  letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--fg-3);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === HERO === */
+.hero {
+  background: linear-gradient(135deg, #1a1408 0%, #2d2210 40%, #3d2f18 100%);
+  color: white;
+  text-align: center;
+  align-items: center;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(184,134,11,0.25) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(212,168,83,0.12) 0%, transparent 40%),
+              radial-gradient(circle at 50% 20%, rgba(184,134,11,0.08) 0%, transparent 30%);
+  animation: nebula 20s ease-in-out infinite;
+}
+
+@keyframes nebula {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-2%, 1%) scale(1.02); }
+  66% { transform: translate(1%, -1%) scale(0.98); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+.hero-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  border: 1px solid var(--gold-30);
+  border-radius: 20px;
+  padding: 7px 18px;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.8s ease 0.15s both;
+}
+
+.hero h1 span { color: var(--gold-light); }
+
+.hero p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.55);
+  max-width: 520px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+  animation: fadeInUp 0.8s ease 0.3s both;
+}
+
+.hero-handle {
+  display: inline-block;
+  padding: 8px 24px;
+  border: 1px solid var(--gold-30);
+  border-radius: 100px;
+  color: var(--gold-light);
+  font-size: 15px;
+  font-weight: 500;
+  animation: fadeInUp 0.8s ease 0.45s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === VIDEO SECTION === */
+.video-hero {
+  background: var(--bg);
+  min-height: auto;
+  padding: 0 80px 60px;
+  scroll-snap-align: none;
+}
+
+.video-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.video-wrapper video { width: 100%; display: block; }
+
+/* === STAT CARDS === */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.stat-card.gold::before { background: var(--gold); }
+.stat-card.red::before { background: var(--danger); }
+.stat-card.green::before { background: var(--success); }
+.stat-card.neutral::before { background: var(--fg-muted); }
+
+.stat-card .num {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.stat-card .num.gold { color: var(--gold); }
+.stat-card .num.red { color: var(--danger); }
+.stat-card .num.green { color: var(--success); }
+.stat-card .num.muted { color: var(--fg-muted); }
+
+.stat-card .lbl {
+  font-size: 13px;
+  color: var(--fg-3);
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+/* === BAR COMPARISON === */
+.bar-compare { margin: 32px 0; }
+
+.bar-item { margin-bottom: 20px; }
+
+.bar-item .bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.bar-item .bar-name { font-size: 14px; color: var(--fg-3); }
+.bar-item .bar-value { font-size: 18px; font-weight: 700; }
+
+.bar-track {
+  height: 44px;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  min-width: 50px;
+}
+
+/* === EVOLUTION BARS === */
+.evolution {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 40px 0;
+  padding: 2rem 0;
+}
+
+.evo-bar { display: flex; flex-direction: column; align-items: center; gap: .75rem; }
+
+.evo-bar .bar {
+  width: 90px;
+  border-radius: var(--radius) var(--radius) 4px 4px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.evo-bar .week { font-size: 13px; color: var(--fg-muted); font-weight: 500; }
+.evo-bar .cps { font-size: 15px; font-weight: 700; }
+.evo-arrow { font-size: 2rem; color: var(--gold); margin-bottom: 3rem; }
+
+/* === VS GRID === */
+.vs-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin: 32px 0;
+}
+
+.vs-card {
+  border-radius: var(--radius);
+  padding: 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+
+.vs-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+.vs-card.old {
+  background: linear-gradient(135deg, #fef2f2, #fff5f5);
+  border-color: #fecaca;
+}
+
+.vs-card.new {
+  background: linear-gradient(135deg, #f0fdf4, #f5fff8);
+  border-color: #bbf7d0;
+}
+
+.vs-card .tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.vs-card.old .tag { color: var(--danger); }
+.vs-card.new .tag { color: var(--success); }
+
+.vs-card li {
+  list-style: none;
+  padding: 8px 0;
+  font-size: 15px;
+  color: var(--fg-2);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  text-align: left;
+}
+
+.vs-card li:last-child { border: none; }
+
+.vs-divider {
+  font-size: 24px;
+  color: var(--gold);
+  font-weight: 800;
+  text-align: center;
+}
+
+/* === SCENARIO === */
+.scenario-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.scenario {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+
+.scenario:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.scenario .stag {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--fg-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.scenario .snum { font-size: 2.75rem; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.scenario .sdet { font-size: 13px; color: var(--fg-muted); margin-top: 4px; }
+.scenario.main { border-color: #86efac; background: linear-gradient(135deg, #f0fdf4, #f5fff8); }
+.scenario.main .snum { color: var(--success); }
+
+/* === BIG NUMBER === */
+.big-number { text-align: center; padding: 1rem 0; }
+.big-number .value { font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+.big-number .label { font-size: 15px; color: var(--fg-muted); margin-top: 6px; }
+
+/* === LINE CARDS === */
+.line-cards { display: grid; gap: 14px; margin: 24px 0; }
+
+.line-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+
+.line-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+.line-card .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--gold);
+  background: var(--gold-10);
+  flex-shrink: 0;
+}
+
+.line-card h4 { font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 4px; text-align: left; }
+.line-card p { font-size: 14px; color: var(--fg-3); margin: 0; line-height: 1.5; text-align: left; }
+
+/* === AVOID GRID === */
+.avoid-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.avoid-item {
+  background: linear-gradient(135deg, #fef2f2, #fff5f5);
+  border: 1px solid #fecaca;
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.avoid-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--danger);
+}
+
+.avoid-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.avoid-item .x { font-size: 2rem; color: var(--danger); font-weight: 800; margin-bottom: 8px; }
+.avoid-item .atitle { font-size: 15px; font-weight: 600; color: #991b1b; margin-bottom: 4px; }
+.avoid-item .adesc { font-size: 13px; color: var(--fg-3); line-height: 1.4; }
+
+/* === HOOK BOX === */
+.hook-box {
+  margin: 32px 0;
+  padding: 36px;
+  background: linear-gradient(135deg, var(--bg-warm), #f5f0e8);
+  border: 1px solid var(--gold-20);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.hook-box .hook-title { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 6px; }
+.hook-box .hook-sub { font-size: 15px; color: var(--fg-3); margin-bottom: 28px; }
+
+.hook-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.hook-step { text-align: center; }
+.hook-step .hs-num { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+.hook-step .hs-icon { font-size: 2rem; margin-bottom: 6px; }
+.hook-step .hs-text { font-size: 14px; color: var(--fg-2); line-height: 1.4; }
+
+.hook-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; text-align: left; }
+
+.hook-do, .hook-dont { padding: 20px; border-radius: var(--radius); }
+.hook-do { background: linear-gradient(135deg, #f0fdf4, #f5fff8); border: 1px solid #bbf7d0; }
+.hook-dont { background: linear-gradient(135deg, #fef2f2, #fff5f5); border: 1px solid #fecaca; }
+.hook-do .hd-title { color: var(--success); font-family: var(--mono); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+.hook-dont .hd-title { color: var(--danger); font-family: var(--mono); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+.hook-do li, .hook-dont li { list-style: none; font-size: 14px; color: var(--fg-2); padding: 4px 0; }
+
+/* === FLOW STEPS === */
+.flow-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.flow-step { text-align: center; position: relative; }
+
+.flow-step .fs-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--bg);
+}
+
+.flow-step .fs-icon { font-size: 1.75rem; margin-bottom: 6px; }
+.flow-step .fs-text { font-size: 13px; color: var(--fg-3); line-height: 1.4; }
+
+.flow-step::after {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: calc(50% + 30px);
+  width: calc(100% - 60px);
+  height: 2px;
+  background: var(--gold-20);
+}
+
+.flow-step:last-child::after { display: none; }
+
+/* === CALLOUT === */
+.callout {
+  border-left: 3px solid var(--gold);
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-size: 15px;
+  color: var(--fg-2);
+  background: var(--bg-warm);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.callout strong { color: var(--fg); display: block; margin-top: 4px; }
+
+/* === FOOTER === */
+footer {
+  padding: 40px 80px;
+  text-align: center;
+  background: #141414;
+  border-top: 1px solid #333;
+  min-height: auto;
+}
+
+footer p { font-size: 14px; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+footer .brand { color: rgba(255,255,255,0.5); font-weight: 500; }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  section { padding: 40px 24px; }
+  .video-hero { padding: 0 24px 40px; }
+  footer { padding: 30px 24px; }
+  .hero h1 { font-size: 32px; }
+  .stat-grid, .scenario-row, .avoid-grid { grid-template-columns: 1fr; }
+  .vs-grid { grid-template-columns: 1fr; gap: 12px; }
+  .vs-divider { transform: rotate(90deg); }
+  .hook-steps, .flow-steps { grid-template-columns: 1fr; }
+  .hook-vs { grid-template-columns: 1fr; }
+  .evolution { flex-wrap: wrap; justify-content: center; }
+  .line-card { grid-template-columns: 1fr; }
+  .flow-step::after { display: none; }
+  .big-number .value { font-size: 3.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; scroll-snap-type: none; }
+  .hero::before { animation: none; }
+  .progress-bar-fill { animation: none; }
+  * { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots">
+  <button class="nav-dot active" onclick="document.getElementById('hero').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('problema').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('porque').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('comparacao').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('evolucao').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('top3').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('estrategia').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('conteudo').scrollIntoView()"></button>
+  <button class="nav-dot" onclick="document.getElementById('pratica').scrollIntoView()"></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Estrategia de crescimento</div>
+    <h1>Transformar investimento<br>em <span>seguidores reais</span></h1>
+    <p>Uma estrategia baseada em dados reais para escalar o perfil @antonio.lima.junior com eficiencia e qualidade.</p>
+    <div class="hero-handle">@antonio.lima.junior</div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="video-hero auto-height">
+  <div class="video-wrapper">
+    <video controls preload="metadata">
+      <source src="assets/antonio-junior/estrategia-video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- PROBLEMA: NUMEROS -->
+<section class="dark" id="problema">
+  <div class="container">
+    <div class="section-tag">Ultimos 90 dias</div>
+    <div class="section-title">88 impulsionamentos.<br>O resultado?</div>
+
+    <div class="stat-grid">
+      <div class="stat-card gold">
+        <div class="num gold">R$19.786</div>
+        <div class="lbl">Investidos</div>
+      </div>
+      <div class="stat-card neutral">
+        <div class="num" style="color:#ffffff">1.192</div>
+        <div class="lbl">Seguidores</div>
+      </div>
+      <div class="stat-card red">
+        <div class="num red">R$16,60</div>
+        <div class="lbl">Custo por seguidor</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card red">
+        <div class="num red">11</div>
+        <div class="lbl">Impulsionamentos com<br>ZERO seguidores</div>
+      </div>
+      <div class="stat-card red">
+        <div class="num red">79%</div>
+        <div class="lbl">Com custo acima de<br>R$10/seguidor</div>
+      </div>
+      <div class="stat-card neutral">
+        <div class="num muted">R$342</div>
+        <div class="lbl">Fernando Miranda: 53k views,<br>0 seguidores</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE -->
+<section id="porque">
+  <div class="container">
+    <div class="section-tag">O que esta acontecendo</div>
+    <div class="section-title">O dinheiro funciona &mdash;<br>mas de forma indireta</div>
+
+    <div class="callout">
+      Dinheiro &rarr; Distribuicao &rarr; Compartilhamento &rarr; Seguidor organico.
+      <strong>O seguidor nao entra pelo anuncio. Entra pelo organico. Mas quem abriu a porta foi o investimento.</strong>
+    </div>
+
+    <div class="section-subtitle" style="margin-top:16px">O objetivo ja esta correto: <strong>visita ao perfil</strong>. O problema e o <strong>publico restrito por interesses manuais</strong> que trava o algoritmo.</div>
+
+    <div class="vs-grid">
+      <div class="vs-card old">
+        <div class="tag">Interesses manuais</div>
+        <ul>
+          <li>&ldquo;Mostra SO pra essas pessoas&rdquo;</li>
+          <li>Limita o alcance</li>
+          <li>Encarece o custo</li>
+          <li>Algoritmo travado</li>
+        </ul>
+      </div>
+      <div class="vs-divider">&rarr;</div>
+      <div class="vs-card new">
+        <div class="tag">Metodo Andromeda</div>
+        <ul>
+          <li>Publico aberto, Brasil inteiro</li>
+          <li>O conteudo filtra o publico</li>
+          <li>Algoritmo aprende e otimiza</li>
+          <li>Custo cai com o tempo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARACAO -->
+<section class="dark" id="comparacao">
+  <div class="container">
+    <div class="section-tag">Comparacao real</div>
+    <div class="section-title">Mesmo objetivo.<br>Resultado completamente diferente.</div>
+
+    <div class="bar-compare">
+      <div class="bar-item">
+        <div class="bar-label">
+          <span class="bar-name">Botao do Instagram (90 dias)</span>
+          <span class="bar-value" style="color:var(--danger)">R$16,60</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#991b1b,#dc2626)">R$16,60/seg</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">
+          <span class="bar-name">Gerenciador profissional (3 semanas)</span>
+          <span class="bar-value" style="color:var(--gold-light)">R$3,42</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:21%;background:linear-gradient(90deg,#92400e,var(--gold))">R$3,42</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">
+          <span class="bar-name">Gerenciador (melhor semana)</span>
+          <span class="bar-value" style="color:var(--success)">R$1,89</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:11%;background:linear-gradient(90deg,#166534,#16a34a)">R$1,89</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      Se os R$19.786 tivessem sido investidos com CPS de R$2:
+      <strong style="font-size:20px;color:var(--success)">~9.900 seguidores rastreados</strong>
+    </div>
+  </div>
+</section>
+
+<!-- EVOLUCAO -->
+<section id="evolucao">
+  <div class="container">
+    <div class="section-tag">Evolucao no Gerenciador</div>
+    <div class="section-title">O custo caiu 83%<br>em 3 semanas</div>
+
+    <div class="evolution">
+      <div class="evo-bar">
+        <div class="cps" style="color:var(--danger)">R$10,90</div>
+        <div class="bar" style="height:180px;background:linear-gradient(to top,#991b1b,#dc2626)">65</div>
+        <div class="week">Semana 1</div>
+      </div>
+      <div class="evo-arrow">&rarr;</div>
+      <div class="evo-bar">
+        <div class="cps" style="color:var(--gold)">R$2,81</div>
+        <div class="bar" style="height:120px;background:linear-gradient(to top,#92400e,var(--gold))">187</div>
+        <div class="week">Semana 2</div>
+      </div>
+      <div class="evo-arrow">&rarr;</div>
+      <div class="evo-bar">
+        <div class="cps" style="color:var(--success)">R$1,89</div>
+        <div class="bar" style="height:80px;background:linear-gradient(to top,#166534,#16a34a)">277</div>
+        <div class="week">Semana 3</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;color:var(--fg-muted);font-size:15px">O algoritmo aprende quem segue &mdash; e concentra o investimento nessas pessoas.</p>
+  </div>
+</section>
+
+<!-- TOP 3 -->
+<section class="dark" id="top3">
+  <div class="container">
+    <div class="section-tag">O que funcionou</div>
+    <div class="section-title">Os 3 melhores conteudos<br>tinham algo em comum</div>
+
+    <div class="line-cards">
+      <div class="line-card">
+        <div class="icon">01</div>
+        <div>
+          <h4>&ldquo;Depende de voce&rdquo;</h4>
+          <p>Trajetoria pessoal. Autenticidade. <strong style="color:var(--success)">CPS R$1,89</strong></p>
+        </div>
+      </div>
+      <div class="line-card">
+        <div class="icon">02</div>
+        <div>
+          <h4>&ldquo;Equipe Forte Se Constroi&rdquo;</h4>
+          <p>Lideranca no podcast. Referencia pra empresarios. <strong style="color:var(--gold)">CPS R$2,79</strong></p>
+        </div>
+      </div>
+      <div class="line-card">
+        <div class="icon">03</div>
+        <div>
+          <h4>&ldquo;Radio Antena 1&rdquo;</h4>
+          <p>Conexao regional. Quem e de Manaus se identifica.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align:center;max-width:none;margin-top:24px;color:var(--gold);font-weight:600;font-size:15px">Os dois melhores comecavam em preto e branco com frase forte na tela.</p>
+  </div>
+</section>
+
+<!-- NOVA ESTRATEGIA -->
+<section class="auto-height" id="estrategia" style="padding-top:80px;padding-bottom:80px;">
+  <div class="container">
+    <div class="section-tag">Nova estrategia</div>
+    <div class="section-title">O que muda</div>
+
+    <div class="vs-grid">
+      <div class="vs-card old">
+        <div class="tag">Antes</div>
+        <ul>
+          <li>R$17-40 por seguidor</li>
+          <li>Otimizado pra visualizacoes</li>
+          <li>Sem controle de publico</li>
+          <li>Sem dados de performance</li>
+        </ul>
+      </div>
+      <div class="vs-divider">&rarr;</div>
+      <div class="vs-card new">
+        <div class="tag">Agora</div>
+        <ul>
+          <li>Meta: R$2 por seguidor</li>
+          <li>Otimizado pra seguidores</li>
+          <li>Algoritmo encontra empresarios</li>
+          <li>Relatorio semanal com metricas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stat-grid" style="grid-template-columns: 1fr 1fr; margin-top:40px;">
+      <div class="stat-card gold">
+        <div class="num gold">R$5.000</div>
+        <div class="lbl">Mes 1 &middot; R$166/dia</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="num gold">R$10.000</div>
+        <div class="lbl">Mes 2+ se confirmar</div>
+      </div>
+    </div>
+
+    <div class="scenario-row" style="margin-top:32px;">
+      <div class="scenario">
+        <div class="stag">Conservador</div>
+        <div class="snum" style="color:var(--fg-muted)">1.000</div>
+        <div class="sdet">seg/mes &middot; CPS R$5</div>
+      </div>
+      <div class="scenario main">
+        <div class="stag">Esperado</div>
+        <div class="snum">2.500</div>
+        <div class="sdet">seg/mes &middot; CPS R$2</div>
+      </div>
+      <div class="scenario">
+        <div class="stag">Otimista</div>
+        <div class="snum" style="color:var(--gold)">3.500</div>
+        <div class="sdet">seg/mes &middot; CPS R$1,43</div>
+      </div>
+    </div>
+
+    <div class="big-number" style="margin-top:24px;">
+      <div class="value" style="color:var(--success)">+15.000</div>
+      <div class="label">seguidores qualificados em 6 meses</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEUDO -->
+<section class="dark auto-height" id="conteudo" style="padding-top:80px;padding-bottom:80px;">
+  <div class="container">
+    <div class="section-tag">Conteudo</div>
+    <div class="section-title">3 linhas que trazem seguidores</div>
+
+    <div class="line-cards">
+      <div class="line-card">
+        <div class="icon">1</div>
+        <div>
+          <h4>&ldquo;Eu ja passei por isso&rdquo;</h4>
+          <p>Situacoes reais como empresario. Desafios, decisoes dificeis. O publico se identifica e quer acompanhar.</p>
+        </div>
+      </div>
+      <div class="line-card">
+        <div class="icon">2</div>
+        <div>
+          <h4>&ldquo;A verdade que ninguem fala&rdquo;</h4>
+          <p>Opinioes diretas sobre gestao e lideranca. O que muitos empresarios pensam mas poucos dizem.</p>
+        </div>
+      </div>
+      <div class="line-card">
+        <div class="icon">3</div>
+        <div>
+          <h4>&ldquo;Meu ecossistema&rdquo;</h4>
+          <p>Bastidores reais: Onda Digital, Antena 1, DSX. Nao propaganda &mdash; orgulho genuino de quem constroi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag" style="margin-top:40px;">O que evitar</div>
+    <div class="avoid-grid">
+      <div class="avoid-item">
+        <div class="x">&times;</div>
+        <div class="atitle">Politica</div>
+        <div class="adesc">Da views, nao seguidores.<br>CPS R$8-19</div>
+      </div>
+      <div class="avoid-item">
+        <div class="x">&times;</div>
+        <div class="atitle">Cotidiano</div>
+        <div class="adesc">Curiosidade sem valor.<br>CPS R$25-48</div>
+      </div>
+      <div class="avoid-item">
+        <div class="x">&times;</div>
+        <div class="atitle">Cases externos</div>
+        <div class="adesc">Sem conexao pessoal.<br>CPS R$10-23</div>
+      </div>
+    </div>
+
+    <div class="hook-box">
+      <div class="hook-title">Regra dos 3 segundos</div>
+      <div class="hook-sub">Os primeiros 3 segundos decidem tudo.</div>
+
+      <div class="hook-steps">
+        <div class="hook-step">
+          <div class="hs-num">Segundo 1</div>
+          <div class="hs-icon">&#9632;</div>
+          <div class="hs-text">Frase forte na tela<br>Preto e branco</div>
+        </div>
+        <div class="hook-step">
+          <div class="hs-num">Segundo 2-3</div>
+          <div class="hs-icon">&#9654;</div>
+          <div class="hs-text">Reforco direto<br>Voz confirma a frase</div>
+        </div>
+        <div class="hook-step">
+          <div class="hs-num">Depois</div>
+          <div class="hs-icon">&#9733;</div>
+          <div class="hs-text">&ldquo;Quando eu tinha...&rdquo;<br>Historia real comeca</div>
+        </div>
+      </div>
+
+      <div class="hook-vs">
+        <div class="hook-do">
+          <div class="hd-title">Funciona</div>
+          <ul>
+            <li>Frase forte + texto grande na tela</li>
+            <li>Preto e branco / contraste alto</li>
+            <li>Historia pessoal na sequencia</li>
+          </ul>
+        </div>
+        <div class="hook-dont">
+          <div class="hd-title">Nao funciona</div>
+          <ul>
+            <li>&ldquo;Oi pessoal, nesse video...&rdquo;</li>
+            <li>Comecar devagar, sem impacto</li>
+            <li>Sem texto na tela</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="pratica">
+  <div class="container">
+    <div class="section-tag">Na pratica</div>
+    <div class="section-title">Como funciona</div>
+    <div class="section-subtitle">Voce nao precisa se preocupar com a parte tecnica.</div>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="fs-icon">&#128247;</div>
+        <div class="fs-num">1</div>
+        <div class="fs-text">Voce grava e posta normalmente</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">&#127919;</div>
+        <div class="fs-num">2</div>
+        <div class="fs-text">Selecionamos os melhores</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">&#128640;</div>
+        <div class="fs-num">3</div>
+        <div class="fs-text">Algoritmo distribui no Brasil</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">&#128200;</div>
+        <div class="fs-num">4</div>
+        <div class="fs-text">Analise e ajuste semanal</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">&#128203;</div>
+        <div class="fs-num">5</div>
+        <div class="fs-text">Relatorio mensal completo</div>
+      </div>
+    </div>
+
+    <div class="callout" style="text-align:center;margin-top:32px;">
+      <strong style="font-size:17px;display:inline">Foca no conteudo. A gente cuida da distribuicao.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="brand">Digital Comunicacao</p>
+  <p>Igor Andrade &middot; Marco 2026</p>
+</footer>
+
+<!-- JS: Nav dots + Progress bar fallback -->
+<script>
+(function(){
+  // Nav dots
+  var dots = document.querySelectorAll('.nav-dot');
+  var sections = document.querySelectorAll('section[id]');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id = e.target.id;
+        dots.forEach(function(d,i){ d.classList.toggle('active', sections[i] && sections[i].id === id); });
+      }
+    });
+  }, {threshold: 0.4});
+  sections.forEach(function(s){ observer.observe(s); });
+
+  // Progress bar fallback
+  var bar = document.querySelector('.progress-bar-fill');
+  if(bar && !(CSS.supports && CSS.supports('animation-timeline','scroll()'))){
+    window.addEventListener('scroll',function(){
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = 'scaleX(' + (document.documentElement.scrollTop / h) + ')';
+    },{passive:true});
+  }
+})();
+</script>
+
+</body>
+</html>
