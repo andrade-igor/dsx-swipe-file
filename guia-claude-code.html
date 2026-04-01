@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como Iniciar no Claude Code — Guia por Igor Andrade</title>
+  <meta name="description" content="Instale e configure o Claude Code em 15 minutos — mesmo sem saber programar. Guia passo a passo por Igor Andrade.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS VARIABLES & RESET
+       ============================================ */
+    :root {
+      --bg-deep: #080b14;
+      --bg-surface: #0e1220;
+      --bg-card: #141825;
+      --bg-code: #0c0f1a;
+      --bg-elevated: #1a1f30;
+      --text-primary: #eae6df;
+      --text-secondary: #9a968e;
+      --text-muted: #5e5b55;
+      --accent: #d4874a;
+      --accent-glow: rgba(212, 135, 74, 0.15);
+      --accent-hover: #e09558;
+      --green: #4a9e7e;
+      --green-bg: rgba(74, 158, 126, 0.08);
+      --green-border: rgba(74, 158, 126, 0.25);
+      --yellow: #c4a24e;
+      --yellow-bg: rgba(196, 162, 78, 0.08);
+      --yellow-border: rgba(196, 162, 78, 0.25);
+      --red: #c45a5a;
+      --red-bg: rgba(196, 90, 90, 0.08);
+      --red-border: rgba(196, 90, 90, 0.25);
+      --border: rgba(234, 230, 223, 0.06);
+      --border-hover: rgba(234, 230, 223, 0.12);
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --transition: 0.2s ease;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      scroll-behavior: smooth;
+      scroll-padding-top: 5rem;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      text-align: left;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================
+       SKIP NAVIGATION
+       ============================================ */
+    .skip-nav {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--accent);
+      color: var(--bg-deep);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.85rem;
+      z-index: 1000;
+      text-decoration: none;
+    }
+
+    .skip-nav:focus {
+      top: 1rem;
+    }
+
+    /* ============================================
+       PROGRESS BAR
+       ============================================ */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #e8a86a);
+      z-index: 1001;
+      transition: width 0.1s linear;
+    }
+
+    /* ============================================
+       SIDEBAR NAV
+       ============================================ */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      z-index: 100;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-brand {
+      padding: 0 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-brand span {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .sidebar-brand small {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      flex: 1;
+    }
+
+    .sidebar-nav li {
+      margin: 0;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 1.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all var(--transition);
+      border-left: 2px solid transparent;
+      line-height: 1.4;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text-primary);
+      background: rgba(234, 230, 223, 0.03);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .sidebar-nav .nav-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      font-size: 0.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all var(--transition);
+    }
+
+    .sidebar-nav a.active .nav-number {
+      background: var(--accent);
+      color: var(--bg-deep);
+      border-color: var(--accent);
+    }
+
+    .sidebar-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+
+    .sidebar-footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+      transition: color var(--transition);
+    }
+
+    .sidebar-footer a:hover {
+      color: var(--accent);
+    }
+
+    /* Mobile menu toggle */
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 200;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all var(--transition);
+    }
+
+    .menu-toggle:hover {
+      border-color: var(--border-hover);
+    }
+
+    .menu-toggle svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 99;
+    }
+
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
+    .main {
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    .content {
+      max-width: 65ch;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* ============================================
+       HERO / COVER
+       ============================================ */
+    .hero {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .hero-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 50ch;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-meta-item strong {
+      display: block;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* ============================================
+       INTRO SECTION
+       ============================================ */
+    .intro {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .intro h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .intro p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .outcome-box {
+      background: var(--accent-glow);
+      border: 1px solid rgba(212, 135, 74, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .outcome-box p {
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .outcome-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ============================================
+       STEP SECTIONS
+       ============================================ */
+    .step {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step:last-of-type {
+      border-bottom: none;
+    }
+
+    .step-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .step-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-indicator .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg-deep);
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .step h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .step h3 {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 1.75rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .step ul, .step ol {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin: 0.5rem 0 1rem;
+      padding-left: 1.25rem;
+    }
+
+    .step li {
+      margin-bottom: 0.4rem;
+      line-height: 1.55;
+    }
+
+    .step li strong {
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       CODE BLOCKS
+       ============================================ */
+    code {
+      font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8em;
+    }
+
+    :not(pre) > code {
+      background: var(--bg-elevated);
+      color: var(--accent);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      position: relative;
+    }
+
+    pre code {
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      line-height: 1.7;
+    }
+
+    .code-label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      background: var(--bg-elevated);
+      border-radius: 0 var(--radius) 0 var(--radius);
+      font-family: var(--font-body);
+      font-weight: 600;
+    }
+
+    /* ============================================
+       CALLOUT BOXES
+       ============================================ */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      border: 1px solid;
+    }
+
+    .callout p {
+      font-size: 0.8rem;
+      margin: 0;
+    }
+
+    .callout-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .callout-tip {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+      color: var(--text-secondary);
+    }
+
+    .callout-tip .callout-label {
+      color: var(--green);
+    }
+
+    .callout-warn {
+      background: var(--yellow-bg);
+      border-color: var(--yellow-border);
+      color: var(--text-secondary);
+    }
+
+    .callout-warn .callout-label {
+      color: var(--yellow);
+    }
+
+    .callout-important {
+      background: var(--red-bg);
+      border-color: var(--red-border);
+      color: var(--text-secondary);
+    }
+
+    .callout-important .callout-label {
+      color: var(--red);
+    }
+
+    /* ============================================
+       RESULT BOX
+       ============================================ */
+    .result-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .result-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .result-box p {
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       COMMANDS TABLE
+       ============================================ */
+    .commands-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+    }
+
+    .commands-table th {
+      text-align: left;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .commands-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .commands-table td:first-child {
+      white-space: nowrap;
+    }
+
+    .commands-table td:first-child code {
+      font-size: 0.78rem;
+    }
+
+    .commands-table td:last-child {
+      color: var(--text-secondary);
+    }
+
+    .commands-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ============================================
+       COMPARISON BOX
+       ============================================ */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    .comparison-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+    }
+
+    .comparison-item h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .comparison-item p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       PLANS GRID
+       ============================================ */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    .plan-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      transition: all var(--transition);
+    }
+
+    .plan-card.recommended {
+      border-color: var(--accent);
+      position: relative;
+    }
+
+    .plan-card.recommended::before {
+      content: 'Recomendado';
+      position: absolute;
+      top: -0.5rem;
+      left: 1rem;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--accent);
+      color: var(--bg-deep);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .plan-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .plan-price {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Complete/badge buttons hidden (feature removed) */
+    .complete-step-btn,
+    .completed-badge {
+      display: none;
+    }
+
+    /* ============================================
+       CHECKLIST
+       ============================================ */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 1.25rem 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid var(--border-hover);
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      position: relative;
+      transition: all var(--transition);
+    }
+
+    .checklist input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .checklist input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--bg-deep);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .checklist input[type="checkbox"]:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .checklist li.checked {
+      color: var(--text-muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--text-muted);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(212,135,74,0.08) 0%, rgba(212,135,74,0.02) 100%);
+      border: 1px solid rgba(212, 135, 74, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .cta-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      max-width: 45ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: var(--bg-deep);
+      text-decoration: none;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 0.82rem;
+      transition: all var(--transition);
+      letter-spacing: -0.01em;
+    }
+
+    .cta-link:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .cta-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ============================================
+       AUTHOR SECTION
+       ============================================ */
+    .author-section {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid var(--accent);
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .author-info h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--text-primary);
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .author-info p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .author-handle {
+      font-size: 0.72rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition);
+    }
+
+    .author-handle:hover {
+      color: var(--accent-hover);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    /* ============================================
+       DOWNLOAD BUTTON
+       ============================================ */
+    .download-bar {
+      background: var(--bg-surface);
+      border: 1px solid rgba(212, 135, 74, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .download-bar-text {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .download-bar-text strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: var(--bg-deep);
+      text-decoration: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 0.78rem;
+      transition: all var(--transition);
+      white-space: nowrap;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-body);
+      letter-spacing: -0.01em;
+    }
+
+    .download-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .download-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .download-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Mobile sticky download bar */
+    .mobile-download {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .mobile-download .download-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       PROMPT GUIDE STYLES
+       ============================================ */
+    .prompt-example {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .prompt-example-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .prompt-example-label.bad {
+      color: var(--red);
+    }
+
+    .prompt-example-label.good {
+      color: var(--green);
+    }
+
+    .prompt-example p {
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      margin: 0;
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    .prompt-anatomy {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .prompt-anatomy ol {
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+
+    .prompt-anatomy li {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      line-height: 1.55;
+    }
+
+    .prompt-anatomy li strong {
+      color: var(--accent);
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .overlay.open {
+        display: block;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .content {
+        padding: 2rem 1.5rem 3rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      html {
+        font-size: 16px;
+      }
+
+      .hero {
+        padding: 2.5rem 0 1.5rem;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        font-size: 0.85rem;
+      }
+
+      .hero-meta {
+        gap: 0.75rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-meta-item {
+        font-size: 0.6rem;
+      }
+
+      .content {
+        padding: 1.25rem 1rem 6rem;
+      }
+
+      .step {
+        margin-bottom: 2.5rem;
+        padding-bottom: 2.5rem;
+      }
+
+      .step h2 {
+        font-size: 1.25rem;
+      }
+
+      .step h3 {
+        font-size: 0.85rem;
+        margin-top: 1.5rem;
+      }
+
+      .step p,
+      .step li {
+        font-size: 0.82rem;
+      }
+
+      pre {
+        padding: 0.85rem 1rem;
+        font-size: 0.72rem;
+        border-radius: 6px;
+      }
+
+      pre code {
+        font-size: 0.72rem;
+      }
+
+      .code-label {
+        font-size: 0.5rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .comparison,
+      .plans-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .comparison-item,
+      .plan-card {
+        padding: 1rem;
+      }
+
+      .callout {
+        padding: 0.85rem 1rem;
+        font-size: 0.78rem;
+      }
+
+      .result-box {
+        padding: 0.85rem 1rem;
+      }
+
+      .commands-table {
+        font-size: 0.75rem;
+      }
+
+      .commands-table td,
+      .commands-table th {
+        padding: 0.5rem;
+      }
+
+      .complete-step-btn {
+        padding: 1rem 1.5rem;
+        font-size: 0.85rem;
+      }
+
+      .cta-section {
+        padding: 1.75rem 1.25rem;
+        margin: 2rem 0;
+      }
+
+      .cta-section h2 {
+        font-size: 1.25rem;
+      }
+
+      .cta-link {
+        width: 100%;
+        justify-content: center;
+        padding: 0.85rem 1.5rem;
+      }
+
+      .author-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .checklist li {
+        font-size: 0.8rem;
+        padding: 0.55rem 0;
+        gap: 0.6rem;
+      }
+
+      .checklist input[type="checkbox"] {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+
+      .download-bar {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .download-bar .download-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .mobile-download {
+        display: block;
+      }
+
+      .intro {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+      }
+
+      .prompt-example {
+        padding: 1rem;
+      }
+
+      .prompt-anatomy {
+        padding: 1rem;
+      }
+    }
+
+    /* ============================================
+       PRINT
+       ============================================ */
+    @media print {
+      :root {
+        --bg-deep: #fff;
+        --bg-surface: #fff;
+        --bg-card: #f8f8f8;
+        --bg-code: #f4f4f4;
+        --bg-elevated: #f0f0f0;
+        --text-primary: #111;
+        --text-secondary: #333;
+        --text-muted: #666;
+        --accent: #b36a2d;
+        --border: #ddd;
+      }
+
+      body {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 11pt;
+        color: #111;
+        background: #fff;
+      }
+
+      .sidebar,
+      .menu-toggle,
+      .progress-bar,
+      .skip-nav,
+      .overlay,
+      .complete-step-btn,
+      .completed-badge,
+      .mobile-download {
+        display: none !important;
+      }
+
+
+      .main {
+        margin-left: 0;
+      }
+
+      .content {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .step,
+      .checklist li,
+      .cta-section,
+      .author-section,
+      .result-box,
+      .callout {
+        page-break-inside: avoid;
+      }
+
+      a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: #666;
+      }
+
+      .cta-link:after,
+      .sidebar-nav a:after,
+      .author-handle:after {
+        content: "" !important;
+      }
+
+      pre {
+        border: 1px solid #ccc;
+        background: #f4f4f4;
+      }
+
+      code {
+        color: #111;
+      }
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step,
+    .intro,
+    .hero,
+    .cta-section,
+    .author-section,
+    .checklist-section {
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .hero { animation-delay: 0.1s; }
+    .intro { animation-delay: 0.15s; }
+
+    /* Stagger via JS for scroll-triggered */
+    .step.visible,
+    .cta-section.visible,
+    .author-section.visible,
+    .checklist-section.visible {
+      opacity: 1;
+      animation: fadeUp 0.4s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <a href="#conteudo" class="skip-nav">Pular para o conteúdo</a>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Progresso de leitura"></div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+  <!-- MOBILE MENU TOGGLE -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Navegação do guia">
+    <div class="sidebar-brand">
+      <span>Claude Code</span>
+      <small>Guia de Início</small>
+    </div>
+    <nav>
+      <ul class="sidebar-nav" id="sidebarNav">
+        <li><a href="#intro"><span class="nav-number">&mdash;</span> Introdução</a></li>
+        <li><a href="#passo-1"><span class="nav-number">1</span> O que é o Claude Code</a></li>
+        <li><a href="#passo-2"><span class="nav-number">2</span> Crie sua conta</a></li>
+        <li><a href="#passo-3"><span class="nav-number">3</span> VS Code + Extensão</a></li>
+        <li><a href="#passo-4"><span class="nav-number">4</span> Faça login</a></li>
+        <li><a href="#passo-5"><span class="nav-number">5</span> Primeiro comando</a></li>
+        <li><a href="#passo-6"><span class="nav-number">6</span> Comandos essenciais</a></li>
+        <li><a href="#passo-7"><span class="nav-number">7</span> Guia de prompt</a></li>
+        <li><a href="#checklist"><span class="nav-number">&check;</span> Checklist final</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/andrade.igor_" target="_blank" rel="noopener noreferrer">@andrade.igor_</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="conteudo">
+    <div class="content">
+
+      <!-- HERO -->
+      <header class="hero">
+        <div class="hero-label">Guia Prático</div>
+        <h1>Como iniciar no <em>Claude Code</em></h1>
+        <p class="hero-subtitle">Instale e configure o Claude Code em 15 minutos &mdash; mesmo sem saber programar. Sem enrolação. Passo a passo direto ao ponto.</p>
+        <div class="download-bar">
+          <div class="download-bar-text">
+            <strong>Salve este guia no seu celular</strong>
+            Baixe o arquivo e consulte offline, quando quiser.
+          </div>
+          <button class="download-btn" id="downloadBtn" aria-label="Baixar guia em HTML">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar guia
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            Tempo estimado
+            <strong>15 minutos</strong>
+          </div>
+          <div class="hero-meta-item">
+            Dificuldade
+            <strong>Iniciante</strong>
+          </div>
+          <div class="hero-meta-item">
+            Atualizado em
+            <strong>Março 2026</strong>
+          </div>
+          <div class="hero-meta-item">
+            Por
+            <strong>Igor Andrade</strong>
+          </div>
+        </div>
+      </header>
+
+      <!-- INTRO -->
+      <section class="intro" id="intro">
+        <h2>O que você vai conseguir</h2>
+        <p>Esse guia não é teoria. É o caminho mais curto entre você e a ferramenta de IA mais poderosa disponível hoje para quem quer <strong>resolver problemas reais</strong> direto no seu editor de código.</p>
+        <p>Não precisa saber programar. Não precisa de experiência com terminal. Vamos usar o <strong>VS Code</strong> &mdash; um editor gratuito e visual. Só precisa seguir os passos.</p>
+        <div class="outcome-box">
+          <div class="outcome-label">Resultado ao final</div>
+          <p>Você terá o Claude Code funcionando dentro do VS Code no seu computador, pronto para automatizar tarefas, gerar código e resolver problemas com IA &mdash; tudo em uma interface visual e amigável.</p>
+        </div>
+      </section>
+
+      <!-- PASSO 1 -->
+      <section class="step" id="passo-1">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">1</span> Passo 1 de 7
+          </div>
+          <h2>Entenda o que é o Claude Code</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Claude Code <strong>não é um chatbot comum</strong>. É uma IA que roda direto dentro do VS Code &mdash; o editor de código mais usado do mundo. Você digita o que precisa em português e ela executa.</p>
+
+        <p>Isso importa porque o Claude Code tem <strong>acesso direto aos seus arquivos, projetos e sistemas</strong>. Sem copiar e colar entre abas. Ele lê, edita e cria arquivos sozinho, dentro do seu ambiente de trabalho.</p>
+
+        <div class="comparison">
+          <div class="comparison-item">
+            <h4>Claude.ai (Chat Web)</h4>
+            <p>Conversa em texto. Você copia respostas e cola no seu projeto. Limitado ao que cabe na janela de chat.</p>
+          </div>
+          <div class="comparison-item">
+            <h4>Claude Code (VS Code)</h4>
+            <p>Acessa seus arquivos diretamente. Lê, edita, cria e executa. Trabalha dentro do seu projeto real, com interface visual.</p>
+          </div>
+        </div>
+
+        <aside class="callout callout-tip" role="note">
+          <div class="callout-label">Dica</div>
+          <p>Pense no Claude.ai como um consultor que te responde por mensagem. O Claude Code é esse mesmo consultor sentado na sua mesa, com acesso ao seu computador &mdash; e você vê tudo acontecendo na tela.</p>
+        </aside>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Você entende por que profissionais estão migrando para essa ferramenta.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="1" aria-label="Concluir passo 1">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="1" aria-label="Passo 1 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 2 -->
+      <section class="step" id="passo-2">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">2</span> Passo 2 de 7
+          </div>
+          <h2>Crie sua conta na Anthropic</h2>
+        </div>
+        <div class="step-body">
+
+        <p>O Claude Code precisa de uma conta com plano pago. O plano gratuito do Claude.ai <strong>não inclui</strong> acesso ao Claude Code.</p>
+
+        <h3>Como criar</h3>
+        <ol>
+          <li>Acesse <strong>claude.ai/login</strong></li>
+          <li>Crie sua conta com Google ou email</li>
+          <li>Escolha um plano que inclua Claude Code</li>
+        </ol>
+
+        <h3>Qual plano escolher</h3>
+        <div class="plans-grid">
+          <div class="plan-card recommended">
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$20/mês</div>
+            <div class="plan-desc">Acesso completo ao Claude Code. Comece por aqui &mdash; é o suficiente para sentir o poder da ferramenta e decidir se faz sentido pra você.</div>
+          </div>
+          <div class="plan-card">
+            <div class="plan-name">Max</div>
+            <div class="plan-price">$100&ndash;200/mês</div>
+            <div class="plan-desc">Modelo mais capaz e contexto estendido. Migre quando sentir que o Pro já não dá conta da sua demanda.</div>
+          </div>
+        </div>
+
+        <aside class="callout callout-tip" role="note">
+          <div class="callout-label">Minha recomendação</div>
+          <p>Começa pelo Pro. Sente o gosto, entende o poder. Se fizer sentido pro teu dia a dia (e vai fazer), aí tu migra pro Max quando quiser. Eu uso o Max de $200/mês e vale cada centavo &mdash; mas eu só sei disso porque comecei pelo Pro.</p>
+        </aside>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Conta ativa com plano que inclui Claude Code.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="2" aria-label="Concluir passo 2">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="2" aria-label="Passo 2 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 3 -->
+      <section class="step" id="passo-3">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">3</span> Passo 3 de 7
+          </div>
+          <h2>Instale o VS Code e a extensão Claude Code</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Vamos usar o <strong>VS Code</strong> (Visual Studio Code) &mdash; um editor gratuito da Microsoft. É a forma mais simples de usar o Claude Code, com interface visual e sem precisar decorar comandos de terminal.</p>
+
+        <h3>Passo 3.1: Baixe o VS Code</h3>
+        <ol>
+          <li>Acesse <strong>code.visualstudio.com</strong></li>
+          <li>Clique no botão de download (ele detecta seu sistema automaticamente)</li>
+          <li>Instale normalmente &mdash; pode manter todas as opções padrão</li>
+        </ol>
+
+        <aside class="callout callout-tip" role="note">
+          <div class="callout-label">Dica</div>
+          <p>Na instalação do Windows, marque a opção <strong>&quot;Add to PATH&quot;</strong> se aparecer. E marque <strong>&quot;Open with Code&quot;</strong> para poder abrir pastas com clique direito.</p>
+        </aside>
+
+        <h3>Passo 3.2: Instale a extensão Claude Code</h3>
+        <ol>
+          <li>Abra o VS Code</li>
+          <li>Na barra lateral esquerda, clique no ícone de <strong>Extensões</strong> (parece 4 quadradinhos) ou pressione <code>Ctrl+Shift+X</code></li>
+          <li>Na busca, digite <strong>Claude Code</strong></li>
+          <li>Encontre a extensão oficial da <strong>Anthropic</strong> e clique em <strong>Install</strong></li>
+        </ol>
+
+        <p>Após instalar, você vai ver o ícone do Claude Code na barra lateral esquerda do VS Code.</p>
+
+        <aside class="callout callout-warn" role="note">
+          <div class="callout-label">Atenção</div>
+          <p>Certifique-se de instalar a extensão oficial da <strong>Anthropic</strong>. Existem imitações &mdash; confira o nome do publicador antes de instalar.</p>
+        </aside>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>VS Code instalado com a extensão Claude Code pronta para usar.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="3" aria-label="Concluir passo 3">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="3" aria-label="Passo 3 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 4 -->
+      <section class="step" id="passo-4">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">4</span> Passo 4 de 7
+          </div>
+          <h2>Faça login e conecte sua conta</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Agora você vai conectar o Claude Code à conta que criou no Passo 2. Só precisa fazer isso <strong>uma vez</strong>.</p>
+
+        <h3>Passo a passo</h3>
+        <ol>
+          <li>No VS Code, clique no <strong>ícone do Claude Code</strong> na barra lateral esquerda</li>
+          <li>Clique em <strong>&quot;Sign In&quot;</strong> (ou &quot;Entrar&quot;)</li>
+          <li>O navegador vai abrir automaticamente pedindo autenticação</li>
+          <li>Faça login com a <strong>mesma conta</strong> do Passo 2</li>
+          <li>Volte ao VS Code &mdash; o painel do Claude Code vai aparecer conectado</li>
+        </ol>
+
+        <p>Suas credenciais ficam salvas. Na próxima vez que abrir o VS Code, já entra conectado automaticamente.</p>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Claude Code autenticado e pronto para usar dentro do VS Code.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="4" aria-label="Concluir passo 4">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="4" aria-label="Passo 4 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 5 -->
+      <section class="step" id="passo-5">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">5</span> Passo 5 de 7
+          </div>
+          <h2>Seu primeiro comando</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Hora de ver a IA agindo no seu computador. Vamos fazer dois testes simples.</p>
+
+        <h3>Abra uma pasta no VS Code</h3>
+        <p>No VS Code, vá em <strong>File &gt; Open Folder</strong> (Arquivo &gt; Abrir Pasta) e escolha qualquer pasta do seu computador. Pode ser a Área de Trabalho ou uma pasta de projeto.</p>
+
+        <p>Depois, clique no <strong>ícone do Claude Code</strong> na barra lateral para abrir o painel de chat.</p>
+
+        <h3>Teste 1: Pergunte algo</h3>
+        <p>No painel do Claude Code, digite em português:</p>
+        <pre><code>o que tem nessa pasta?</code><span class="code-label">Claude Code</span></pre>
+        <p>O Claude vai <strong>analisar todos os arquivos</strong> da pasta e te dar um resumo. Ele lê o conteúdo real, não só os nomes.</p>
+
+        <h3>Teste 2: Crie algo</h3>
+        <p>Agora peça para ele criar algo:</p>
+        <pre><code>crie um arquivo HTML com uma página pessoal bonita sobre mim</code><span class="code-label">Claude Code</span></pre>
+        <p>O Claude vai criar o arquivo na pasta, escrever o código, e te mostrar o que fez. Você vê o arquivo aparecendo em tempo real no VS Code. <strong>Você só precisou pedir em português.</strong></p>
+
+        <h3>Comandos úteis</h3>
+        <p>No painel do Claude Code, você pode usar:</p>
+        <ul>
+          <li><code>/help</code> &mdash; lista todos os comandos disponíveis</li>
+          <li><code>/cost</code> &mdash; mostra quanto você gastou na sessão</li>
+          <li><code>/clear</code> &mdash; limpa a conversa atual</li>
+        </ul>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Você deu seu primeiro comando e viu a IA agir no seu computador.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="5" aria-label="Concluir passo 5">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="5" aria-label="Passo 5 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 6 -->
+      <section class="step" id="passo-6">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">6</span> Passo 6 de 7
+          </div>
+          <h2>Comandos essenciais do dia a dia</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Esses são os recursos que você vai usar constantemente dentro do VS Code. Não precisa decorar tudo agora &mdash; salve esse guia e consulte quando precisar.</p>
+
+        <table class="commands-table">
+          <thead>
+            <tr>
+              <th>Ação</th>
+              <th>O que faz</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Clique no ícone do Claude</code></td>
+              <td>Abre o painel do Claude Code na lateral</td>
+            </tr>
+            <tr>
+              <td><code>Digitar no painel</code></td>
+              <td>Conversa livre com a IA sobre seu projeto</td>
+            </tr>
+            <tr>
+              <td><code>/help</code></td>
+              <td>Lista todos os comandos disponíveis</td>
+            </tr>
+            <tr>
+              <td><code>/cost</code></td>
+              <td>Mostra o gasto de tokens da sessão</td>
+            </tr>
+            <tr>
+              <td><code>/clear</code></td>
+              <td>Limpa a conversa e começa do zero</td>
+            </tr>
+            <tr>
+              <td><code>Shift+Tab</code></td>
+              <td>Modo planejamento (analisa antes de agir)</td>
+            </tr>
+            <tr>
+              <td><code>Esc</code></td>
+              <td>Para o Claude e desfaz a última ação</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="callout callout-tip" role="note">
+          <div class="callout-label">Dica</div>
+          <p>O <code>Shift+Tab</code> é poderoso. Ele faz o Claude <strong>planejar antes de executar</strong> &mdash; mostra o que vai fazer e pede sua aprovação. Use quando a tarefa for complexa.</p>
+        </aside>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Você tem os comandos essenciais na ponta da língua.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="6" aria-label="Concluir passo 6">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="6" aria-label="Passo 6 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- PASSO 7 -->
+      <section class="step" id="passo-7">
+        <div class="step-header">
+          <div class="step-indicator">
+            <span class="step-num">7</span> Passo 7 de 7
+          </div>
+          <h2>Como conversar com o Claude (mini guia de prompt)</h2>
+        </div>
+        <div class="step-body">
+
+        <p>Essa é a parte mais importante do guia. A ferramenta é poderosa, mas <strong>o resultado depende de como você pede</strong>.</p>
+
+        <aside class="callout callout-tip" role="note">
+          <div class="callout-label">Regra de ouro</div>
+          <p>Trate o Claude como se fosse uma criança muito inteligente. Ele é capaz de fazer coisas incríveis &mdash; mas precisa que você <strong>explique com clareza</strong> o que quer, o que não quer, e o contexto da situação. Se você der uma instrução vaga, o resultado vai ser vago. Se der uma instrução detalhada, o resultado vai ser exatamente o que você precisa.</p>
+        </aside>
+
+        <h3>A anatomia de um bom pedido</h3>
+        <div class="prompt-anatomy">
+          <ol>
+            <li><strong>Contexto</strong> &mdash; Explique a situação. &quot;Estou organizando uma viagem pro Japão com minha esposa...&quot;</li>
+            <li><strong>O que você quer</strong> &mdash; Seja direto. &quot;Preciso de um roteiro de 10 dias com foco em comida e cultura...&quot;</li>
+            <li><strong>O que você NÃO quer</strong> &mdash; Elimine caminhos errados. &quot;Não quero pontos turísticos óbvios, não quero roteiro corrido...&quot;</li>
+            <li><strong>Resultado esperado</strong> &mdash; Descreva o formato. &quot;Me entrega dia a dia, com nome dos lugares e links.&quot;</li>
+          </ol>
+        </div>
+
+        <h3>Na prática: antes e depois</h3>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label bad">Instrução vaga</div>
+          <p>&quot;me ajuda com emails&quot;</p>
+        </div>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label good">Instrução com contexto</div>
+          <p>&quot;Estou organizando uma viagem pro Japão com minha esposa, 10 dias, em outubro. Quero um roteiro focado em comida de rua e cultura local. Nada de ponto turístico óbvio. Me entrega dia a dia, com nome dos lugares, bairro, e o que fazer em cada um.&quot;</p>
+        </div>
+
+        <p>Percebe a diferença? O segundo pedido <strong>não deixa espaço pra interpretação errada</strong>. Você contextualizou a situação, disse o que quer, o que não quer, e como quer receber.</p>
+
+        <h3>Mais exemplos práticos</h3>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label bad">Vago</div>
+          <p>&quot;faz uma landing page&quot;</p>
+        </div>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label good">Detalhado</div>
+          <p>&quot;Cria uma página pessoal pra mim. Sou designer freelancer. Tom criativo e descontraído. Seções: uma frase de impacto sobre mim, meus 3 melhores trabalhos com imagem, um formulário de contato. Cores escuras com detalhes em roxo.&quot;</p>
+        </div>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label bad">Vago</div>
+          <p>&quot;analisa meu projeto&quot;</p>
+        </div>
+
+        <div class="prompt-example">
+          <div class="prompt-example-label good">Detalhado</div>
+          <p>&quot;Analisa todos os arquivos desse projeto e me diz: qual a estrutura de pastas, quais tecnologias estão sendo usadas, e se tem algum problema óbvio de organização. Me responde em formato de lista.&quot;</p>
+        </div>
+
+        <h3>Dicas rápidas</h3>
+        <ul>
+          <li><strong>Quebre tarefas grandes em etapas</strong> &mdash; em vez de pedir tudo de uma vez, vá passo a passo</li>
+          <li><strong>Abra a pasta certa no VS Code</strong> &mdash; sempre use <strong>File &gt; Open Folder</strong> na pasta do projeto que você quer trabalhar</li>
+          <li><strong>Explore antes de pedir mudanças</strong> &mdash; peça pro Claude analisar o que existe antes de alterar</li>
+          <li><strong>Se o resultado não ficou bom, refine</strong> &mdash; diga o que ficou errado e peça pra ajustar. É uma conversa, não um comando único</li>
+        </ul>
+
+        <aside class="callout callout-warn" role="note">
+          <div class="callout-label">Atenção</div>
+          <p>O Claude Code pode criar, editar e deletar arquivos. Ele sempre pede permissão antes, mas <strong>leia o que ele propõe</strong> antes de aprovar.</p>
+        </aside>
+
+        <div class="result-box">
+          <div class="result-label">Resultado deste passo</div>
+          <p>Você sabe se comunicar com o Claude de forma que ele entrega exatamente o que você precisa.</p>
+        </div>
+
+        </div>
+        <button class="complete-step-btn" data-step="7" aria-label="Concluir passo 7">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir e ir para o próximo
+        </button>
+        <button class="completed-badge" data-step="7" aria-label="Passo 7 concluído, clique para expandir">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído &mdash; clique para rever
+        </button>
+      </section>
+
+      <!-- CHECKLIST -->
+      <section class="checklist-section" id="checklist">
+        <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem;">Checklist final</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Marque cada item conforme você completa. Seu progresso fica salvo nesta página.</p>
+
+        <ul class="checklist" id="checklist-items">
+          <li>
+            <input type="checkbox" id="check-1" aria-label="Entendi a diferenca entre Claude.ai e Claude Code">
+            <label for="check-1">Entendi a diferença entre Claude.ai e Claude Code</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-2" aria-label="Criei minha conta na Anthropic com plano Pro ou Max">
+            <label for="check-2">Criei minha conta na Anthropic com plano Pro ou Max</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-3" aria-label="Instalei o VS Code">
+            <label for="check-3">Instalei o VS Code</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-4" aria-label="Instalei a extensao Claude Code no VS Code">
+            <label for="check-4">Instalei a extensão Claude Code no VS Code</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-5" aria-label="Fiz login e conectei minha conta">
+            <label for="check-5">Fiz login e conectei minha conta</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-6" aria-label="Dei meu primeiro comando">
+            <label for="check-6">Dei meu primeiro comando e vi a IA agir</label>
+          </li>
+          <li>
+            <input type="checkbox" id="check-7" aria-label="Salvei a tabela de comandos essenciais">
+            <label for="check-7">Salvei a tabela de comandos essenciais</label>
+          </li>
+        </ul>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <h2>Agora você tem a ferramenta</h2>
+        <p>O próximo passo é saber <strong>usar ela de verdade no seu dia a dia</strong>. Eu mostro como no meu conteúdo.</p>
+        <a href="https://instagram.com/andrade.igor_" target="_blank" rel="noopener noreferrer" class="cta-link" aria-label="Seguir Igor Andrade no Instagram">Seguir @andrade.igor_ <span class="step-nav-arrow">&rarr;</span></a>
+      </section>
+
+      <!-- AUTHOR -->
+      <section class="author-section">
+        <div class="author-avatar"><img src="data:image/jpeg;base64,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" alt="Igor Andrade" loading="lazy"></div>
+        <div class="author-info">
+          <h3>Igor Andrade</h3>
+          <p>Usa IA e Claude Code no dia a dia pra automatizar, criar e resolver problemas. Compartilha tudo no Instagram.</p>
+          <a href="https://instagram.com/andrade.igor_" target="_blank" rel="noopener noreferrer" class="author-handle">@andrade.igor_</a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <p>&copy; 2026 Igor Andrade. Todos os direitos reservados.</p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- MOBILE STICKY DOWNLOAD -->
+  <div class="mobile-download" id="mobileDownload">
+    <button class="download-btn" id="downloadBtnMobile" aria-label="Baixar guia em HTML">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Baixar guia para ler offline
+    </button>
+  </div>
+
+  <script>
+    // ============================================
+    // PROGRESS BAR (scroll-based)
+    // ============================================
+    const progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = progress + '%';
+    }
+
+    // ============================================
+    // ACTIVE NAV ITEM
+    // ============================================
+    const sections = document.querySelectorAll('.step, .intro, .checklist-section');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    function updateActiveNav() {
+      let current = '';
+      const offset = 120;
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= offset) {
+          current = section.id;
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
+    const animatedSections = document.querySelectorAll('.step, .cta-section, .author-section, .checklist-section');
+    function checkVisibility() {
+      animatedSections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          section.classList.add('visible');
+        }
+      });
+    }
+
+    // ============================================
+    // SCROLL HANDLER
+    // ============================================
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateProgress();
+          updateActiveNav();
+          checkVisibility();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // ============================================
+    // MOBILE MENU
+    // ============================================
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function openMenu() {
+      sidebar.classList.add('open');
+      overlay.classList.add('open');
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    overlay.addEventListener('click', closeMenu);
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) closeMenu();
+      });
+    });
+
+    // ============================================
+    // CHECKLIST PERSISTENCE
+    // ============================================
+    const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+    const checklistKey = 'claude-code-guide-checklist';
+
+    function loadChecklist() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(checklistKey) || '{}');
+        checkboxes.forEach(cb => {
+          if (saved[cb.id]) {
+            cb.checked = true;
+            cb.closest('li').classList.add('checked');
+          }
+        });
+      } catch(e) {}
+    }
+
+    function saveChecklist() {
+      const state = {};
+      checkboxes.forEach(cb => { state[cb.id] = cb.checked; });
+      try { localStorage.setItem(checklistKey, JSON.stringify(state)); } catch(e) {}
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        cb.closest('li').classList.toggle('checked', cb.checked);
+        saveChecklist();
+      });
+    });
+
+    loadChecklist();
+
+    // ============================================
+    // DOWNLOAD
+    // ============================================
+    function downloadGuide() {
+      const html = document.documentElement.outerHTML;
+      const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'guia-claude-code-igor-andrade.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', downloadGuide);
+    document.getElementById('downloadBtnMobile').addEventListener('click', downloadGuide);
+
+    // ============================================
+    // INIT
+    // ============================================
+    updateProgress();
+    updateActiveNav();
+    checkVisibility();
+  </script>
+</body>
+</html>
