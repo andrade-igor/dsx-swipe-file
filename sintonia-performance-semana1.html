@@ -448,7 +448,30 @@
   /* CHART */
   .chart-box { margin: 10px 0; overflow-x: auto; }
 
+  .chart-box { position: relative; }
   .chart-box svg { width: 100%; height: auto; min-width: 440px; }
+
+  .tip-line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 3,3; opacity: 0; }
+  .tip-zone:hover .tip-line, .tip-zone.active .tip-line { opacity: 1; }
+
+  .tooltip {
+    display: none;
+    position: absolute;
+    background: var(--text);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .tooltip.show { display: block; }
+  .tooltip strong { color: var(--gold); }
+  .tooltip .tip-day { font-weight: 700; margin-bottom: 2px; }
 
   .legend {
     display: flex;
@@ -782,7 +805,16 @@
           <text x="438" y="161" text-anchor="middle" fill="#4a1428" font-size="10" font-family="Inter" font-weight="700">5</text>
           <text x="546" y="136" text-anchor="middle" fill="#4a1428" font-size="10" font-family="Inter" font-weight="700">6</text>
           <text x="600" y="63" text-anchor="middle" fill="#4a1428" font-size="10" font-family="Inter" font-weight="700">8</text>
+
+          <!-- Hover zones -->
+          <g class="tip-zone" data-day="03/abr" data-cac="R$ 140,74" data-vendas="5" data-spend="R$ 703,68"><rect x="60" y="0" width="80" height="260" fill="transparent"/><line x1="114" y1="20" x2="114" y2="240" class="tip-line"/></g>
+          <g class="tip-zone" data-day="04/abr" data-cac="R$ 105,29" data-vendas="5" data-spend="R$ 526,47"><rect x="168" y="0" width="108" height="260" fill="transparent"/><line x1="222" y1="20" x2="222" y2="240" class="tip-line"/></g>
+          <g class="tip-zone" data-day="05/abr" data-cac="R$ 57,72" data-vendas="9" data-spend="R$ 519,44"><rect x="276" y="0" width="108" height="260" fill="transparent"/><line x1="330" y1="20" x2="330" y2="240" class="tip-line"/></g>
+          <g class="tip-zone" data-day="06/abr" data-cac="R$ 134,92" data-vendas="5" data-spend="R$ 674,58"><rect x="384" y="0" width="108" height="260" fill="transparent"/><line x1="438" y1="20" x2="438" y2="240" class="tip-line"/></g>
+          <g class="tip-zone" data-day="07/abr" data-cac="R$ 86,53" data-vendas="6" data-spend="R$ 519,19"><rect x="492" y="0" width="80" height="260" fill="transparent"/><line x1="546" y1="20" x2="546" y2="240" class="tip-line"/></g>
+          <g class="tip-zone" data-day="08/abr" data-cac="R$ 56,35" data-vendas="8" data-spend="R$ 450,82"><rect x="572" y="0" width="68" height="260" fill="transparent"/><line x1="600" y1="20" x2="600" y2="240" class="tip-line"/></g>
         </svg>
+        <div class="tooltip" id="chartTip"></div>
       </div>
 
       <p>O CAC abriu em R$ 141 no primeiro dia e fechou em R$ 56 no sexto — <strong>redução de 60%</strong>. As vendas seguem a tendência inversa: conforme o algoritmo aprende, o custo cai e o volume sobe.</p>
@@ -868,5 +900,46 @@
 
 </div>
 
+<script>
+(function(){
+  const tip = document.getElementById('chartTip');
+  const box = document.querySelector('.chart-box');
+  const zones = document.querySelectorAll('.tip-zone');
+
+  function show(z, x, y) {
+    const d = z.dataset;
+    tip.innerHTML = '<div class="tip-day">' + d.day + '</div>Vendas: <strong>' + d.vendas + '</strong><br>CAC: <strong>' + d.cac + '</strong><br>Spend: ' + d.spend;
+    tip.classList.add('show');
+    const br = box.getBoundingClientRect();
+    const tw = tip.offsetWidth;
+    let left = x - br.left - tw/2;
+    left = Math.max(4, Math.min(left, br.width - tw - 4));
+    tip.style.left = left + 'px';
+    tip.style.top = (y - br.top - 60) + 'px';
+  }
+
+  function hide() {
+    tip.classList.remove('show');
+    zones.forEach(z => z.classList.remove('active'));
+  }
+
+  zones.forEach(z => {
+    z.addEventListener('mouseenter', e => { show(z, e.clientX, e.clientY); });
+    z.addEventListener('mousemove', e => { show(z, e.clientX, e.clientY); });
+    z.addEventListener('mouseleave', hide);
+    z.addEventListener('touchstart', e => {
+      e.preventDefault();
+      zones.forEach(o => o.classList.remove('active'));
+      z.classList.add('active');
+      const t = e.touches[0];
+      show(z, t.clientX, t.clientY);
+    }, {passive: false});
+  });
+
+  document.addEventListener('touchstart', e => {
+    if (!e.target.closest('.tip-zone')) hide();
+  });
+})();
+</script>
 </body>
 </html>
