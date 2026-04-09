@@ -382,6 +382,69 @@
 
   .phase-p strong { color: var(--text); }
 
+  /* STRATEGY GRID */
+  .strat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 14px;
+  }
+
+  .strat-left p {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text-2);
+    margin-bottom: 12px;
+  }
+
+  .strat-left p strong { color: var(--text); }
+
+  .strat-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .phase-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    position: relative;
+  }
+
+  .phase-card-n {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .phase-card-t {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .phase-card-sub {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-bottom: 6px;
+  }
+
+  .phase-card-p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-2);
+  }
+
+  .phase-card-p strong { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .strat-grid { grid-template-columns: 1fr; gap: 14px; }
+  }
+
   /* CHART */
   .chart-box { margin: 10px 0; overflow-x: auto; }
 
@@ -727,36 +790,43 @@
       <div class="s-label">06</div>
       <h2>Estratégia de Público</h2>
 
-      <p>A campanha opera exclusivamente no <strong>Instagram</strong> (Feed, Stories e Reels), direcionada a <strong>mulheres em Manaus</strong>, sem nenhuma segmentação por interesse. Os criativos são o sinal — a IA do Meta (Andrômeda) descobre sozinha quem compra com base no comportamento de quem interage com os vídeos e cards.</p>
-
-      <div class="pills">
-        <span class="pill">100% Instagram</span>
-        <span class="pill">Andrômeda sem interesses</span>
-        <span class="pill">Somente mulheres</span>
-        <span class="pill">3 faixas etárias isoladas</span>
-        <span class="pill">Spend Floor + Spend Cap</span>
-        <span class="pill">Criativos como sinal</span>
-      </div>
-
-      <div class="phase">
-        <div class="phase-n">01</div>
-        <div>
-          <div class="phase-t">Spend Floor — Fase de descoberta</div>
-          <div class="phase-p">Cada faixa etária roda em um conjunto separado com um <strong>gasto mínimo diário equivalente a 1 CAC</strong>. Isso força a plataforma a investir o suficiente em cada público para gerar dados reais de conversão — não permitindo que o algoritmo concentre tudo em um único grupo antes de testar os demais.</div>
+      <div class="strat-grid">
+        <div class="strat-left">
+          <p>Campanha exclusiva no <strong>Instagram</strong> (Feed, Stories, Reels), direcionada a <strong>mulheres em Manaus</strong>. Sem segmentação por interesse — a IA do Meta (Andrômeda) identifica quem compra com base nos criativos.</p>
+          <div class="pills">
+            <span class="pill">100% Instagram</span>
+            <span class="pill">Andrômeda sem interesses</span>
+            <span class="pill">Somente mulheres</span>
+            <span class="pill">3 faixas etárias isoladas</span>
+            <span class="pill">Spend Floor + Spend Cap</span>
+            <span class="pill">Criativos como sinal</span>
+          </div>
         </div>
-      </div>
-
-      <div class="phase">
-        <div class="phase-n">02</div>
-        <div>
-          <div class="phase-t">Spend Cap — Fase de otimização</div>
-          <div class="phase-p">Com dados suficientes, identificamos que <strong>mulheres de 35-44 anos</strong> convertem com o melhor CAC. A partir disso, aplicamos um <strong>teto de gasto diário</strong> nos conjuntos menos eficientes, limitado ao valor de 1 CAC. Se o conjunto não gera uma venda dentro desse limite, não gasta mais. O orçamento restante é automaticamente direcionado para o público que mais converte.</div>
+        <div class="strat-right">
+          <div class="phase-card">
+            <div class="phase-card-n">01</div>
+            <div class="phase-card-t">Spend Floor</div>
+            <div class="phase-card-sub">Descoberta</div>
+            <div class="phase-card-p">Gasto mínimo de <strong>1 CAC/dia</strong> por faixa etária. Força a plataforma a testar todos os públicos antes de concentrar.</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-n">02</div>
+            <div class="phase-card-t">Spend Cap</div>
+            <div class="phase-card-sub">Otimização</div>
+            <div class="phase-card-p">Teto de <strong>1 CAC/dia</strong> nos públicos menos eficientes. Não converte? Não gasta. Orçamento vai pra quem vende.</div>
+          </div>
         </div>
       </div>
 
       <div class="note">
-        <strong>Resultado:</strong> Consolidadas (35-44) recebe a maior fatia do investimento de forma orgânica, enquanto os outros públicos continuam rodando com controle de risco. Nenhum real é desperdiçado — cada conjunto precisa provar que converte dentro do seu limite.
+        <strong>Resultado:</strong> Consolidadas (35-44) recebe a maior fatia do investimento de forma orgânica. Nenhum real é desperdiçado — cada conjunto precisa provar que converte dentro do seu limite.
       </div>
+    </div>
+
+    <!-- 07 PERFORMANCE POR PÚBLICO -->
+    <div class="s">
+      <div class="s-label">07</div>
+      <h2>Performance por Faixa Etária</h2>
 
       <table>
         <thead><tr><th>Faixa Etária</th><th>Vendas</th><th>CAC</th><th>ROAS</th></tr></thead>
@@ -766,11 +836,15 @@
           <tr><td><strong>Jovens</strong> (25–34)</td><td>6</td><td>R$ 103,42</td><td>5,29x</td></tr>
         </tbody>
       </table>
+
+      <div class="note" style="margin-top: 12px">
+        <strong>Mulheres de 35 a 44 anos</strong> convertem com o menor custo e o maior retorno. O algoritmo já direciona a maior parte do orçamento para essa faixa automaticamente.
+      </div>
     </div>
 
-    <!-- 07 DESTAQUES -->
+    <!-- 08 DESTAQUES -->
     <div class="s">
-      <div class="s-label">07</div>
+      <div class="s-label">08</div>
       <h2>Destaques</h2>
 
       <ul class="hl-list">
