@@ -447,16 +447,52 @@
 
   /* RESPONSIVE */
   @media (max-width: 700px) {
-    .header { flex-direction: column; gap: 8px; padding: 20px 20px 16px; }
+    .header { flex-direction: column; gap: 10px; padding: 20px 18px 16px; }
     .header-meta { text-align: left; }
-    .body, .summary, .footer { padding-left: 20px; padding-right: 20px; }
-    .kpis { grid-template-columns: repeat(3, 1fr); }
-    .kpi:nth-child(4), .kpi:nth-child(5) { border-top: 1px solid var(--border); }
+    .header h1 { font-size: 16px; }
+    .body, .footer { padding-left: 18px; padding-right: 18px; }
+    .summary { padding: 20px 18px; font-size: 13px; }
+
+    /* KPIs: 2 colunas + featured full width */
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .kpi { padding: 14px 10px; }
+    .kpi-v { font-size: 18px; }
+    .kpi.em { grid-column: 1 / -1; }
+    .kpi.em .kpi-v { font-size: 24px; }
+
+    /* Tabelas: scroll horizontal */
+    .s > table { display: block; overflow-x: auto; white-space: nowrap; }
+    table th, table td { padding: 8px 10px; font-size: 11px; }
+
+    /* Impacto: empilhado */
     .impact { grid-template-columns: 1fr; }
-    .impact-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .impact-cell { border-right: none; border-bottom: 1px solid var(--border); padding: 14px 12px; }
     .impact-cell:last-child { border-bottom: none; }
-    .ad { grid-template-columns: 1fr; }
-    .ad img { width: 100%; height: 160px; }
+    .impact-v { font-size: 22px; }
+
+    /* Ads: thumb em cima */
+    .ad { grid-template-columns: 1fr; gap: 12px; }
+    .ad img { width: 100%; height: 180px; object-position: top; }
+    .ad-nums { flex-wrap: wrap; }
+    .ad-nums dl { min-width: 70px; flex: 1; }
+    .ad-nums dd { font-size: 16px; }
+
+    /* Gráfico: altura mínima maior */
+    .chart-box svg { min-width: 560px; }
+
+    /* Pills: wrap melhor */
+    .pills { gap: 5px; }
+    .pill { font-size: 10px; padding: 4px 10px; }
+
+    /* Fases */
+    .phase { grid-template-columns: 18px 1fr; gap: 8px; }
+    .phase-p { font-size: 12px; }
+
+    /* Destaques */
+    .hl-list li { font-size: 12px; padding: 8px 0; }
+
+    /* Footer */
+    .footer { flex-direction: column; gap: 6px; align-items: flex-start; }
   }
 
   @media print {
