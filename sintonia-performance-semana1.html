@@ -535,7 +535,9 @@
 
     /* Ads: thumb em cima */
     .ad { grid-template-columns: 1fr; gap: 12px; }
-    .ad img { width: 100%; height: auto; max-height: 400px; object-fit: cover; object-position: top; border-radius: 3px; }
+    .ad img { width: 100%; height: auto; object-fit: cover; border-radius: 3px; }
+    .ad img[alt="reels"] { aspect-ratio: 9 / 16; }
+    .ad img[alt="card"] { aspect-ratio: 4 / 5; }
     .ad-nums { flex-wrap: wrap; }
     .ad-nums dl { min-width: 70px; flex: 1; }
     .ad-nums dd { font-size: 16px; }
@@ -672,7 +674,7 @@
       <h2>Criativos — Top 3</h2>
 
       <div class="ad">
-        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t15.5256-10/665284922_1729619901350037_1741101596577549015_n.jpg?_nc_cat=111&ccb=1-7&_nc_ohc=2RTuU82ob6MQ7kNvwEbJkeF&_nc_oc=Adr17XsBAbc5UIl2L9sd-Kk3w7fiP6pp0O7SUvgx6Cax3CjIWr2v0IU1BMY1DogDQ2Y&_nc_zt=23&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=iXaMu5yo_mAXEFqpZARYyg&_nc_tpa=Q5bMBQGw6Q0ylQshhm9J2QP7qa8vuqJSXtoUzQJSgKuLgHMk2IThLqDfEKkX_vx57K3AbFVD-xnCTYqBFg&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=a7ce7f&_nc_sid=58080a&oh=00_Af3xfyuuSBEjscWdtbZ7ouNegZXMwBWrFxU9GFoJC7jkOA&oe=69DDA644" alt="" loading="lazy">
+        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t15.5256-10/665284922_1729619901350037_1741101596577549015_n.jpg?_nc_cat=111&ccb=1-7&_nc_ohc=2RTuU82ob6MQ7kNvwEbJkeF&_nc_oc=Adr17XsBAbc5UIl2L9sd-Kk3w7fiP6pp0O7SUvgx6Cax3CjIWr2v0IU1BMY1DogDQ2Y&_nc_zt=23&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=iXaMu5yo_mAXEFqpZARYyg&_nc_tpa=Q5bMBQGw6Q0ylQshhm9J2QP7qa8vuqJSXtoUzQJSgKuLgHMk2IThLqDfEKkX_vx57K3AbFVD-xnCTYqBFg&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=a7ce7f&_nc_sid=58080a&oh=00_Af3xfyuuSBEjscWdtbZ7ouNegZXMwBWrFxU9GFoJC7jkOA&oe=69DDA644" alt="reels" loading="lazy">
         <div>
           <div class="ad-head">
             <span class="ad-name">Cíntia Chagas — Atenção Manaus</span>
@@ -689,7 +691,7 @@
       </div>
 
       <div class="ad">
-        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t45.1600-4/659238227_1240330181635540_7242273164093403648_n.png?_nc_cat=103&ccb=1-7&_nc_ohc=E3lcqt6hHFUQ7kNvwFG0W8W&_nc_oc=AdoRb6OZ_gSvqEZRbpa0MoTrFuwlUebw2fqbeHa-32FymOfgGWIYQaFT7U2cJEDhsOM&_nc_zt=1&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=pF9_y2ai26mzMVuvz8athA&_nc_tpa=Q5bMBQH9V3HbxBRKTwugMEfVHe6WNymCk0B5C5KL0QIpk_Ay_PdcmO7GK7FxOycePDyOvDFpFyc8Zq9rYQ&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af262Jb_UEzupb_8m4tl10dWRUXTa7bX5tb-xyQ2MkTrTA&oe=69DDBCBC" alt="" loading="lazy">
+        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t45.1600-4/659238227_1240330181635540_7242273164093403648_n.png?_nc_cat=103&ccb=1-7&_nc_ohc=E3lcqt6hHFUQ7kNvwFG0W8W&_nc_oc=AdoRb6OZ_gSvqEZRbpa0MoTrFuwlUebw2fqbeHa-32FymOfgGWIYQaFT7U2cJEDhsOM&_nc_zt=1&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=pF9_y2ai26mzMVuvz8athA&_nc_tpa=Q5bMBQH9V3HbxBRKTwugMEfVHe6WNymCk0B5C5KL0QIpk_Ay_PdcmO7GK7FxOycePDyOvDFpFyc8Zq9rYQ&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af262Jb_UEzupb_8m4tl10dWRUXTa7bX5tb-xyQ2MkTrTA&oe=69DDBCBC" alt="card" loading="lazy">
         <div>
           <div class="ad-head">
             <span class="ad-name">Presença. Clareza. Autoridade.</span>
@@ -706,7 +708,7 @@
       </div>
 
       <div class="ad">
-        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t45.1600-4/663770821_1240330271635531_8403654053083892486_n.png?_nc_cat=104&ccb=1-7&_nc_ohc=XXmfozQxXUsQ7kNvwHo12h3&_nc_oc=Adpi3s8kajof43_-YW-jWDYX92_4c57lXVXAIxq4hhwgIY9umDG4OpQVGZqFDziF1n0&_nc_zt=1&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=rvIUpQ2d6o2T3BTkaszRJg&_nc_tpa=Q5bMBQGgACi3ifx8yp79vwVsSlSvhMEWsQ95FYe3fdJiera979USur-R5gukGkidpxaS6u7mxfNjMAJJUw&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af1ItyNKbEhV93vtJnR2xne_AakyN9DQPFTirAAZ6NmmWg&oe=69DDB945" alt="" loading="lazy">
+        <img src="https://scontent.fpll10-1.fna.fbcdn.net/v/t45.1600-4/663770821_1240330271635531_8403654053083892486_n.png?_nc_cat=104&ccb=1-7&_nc_ohc=XXmfozQxXUsQ7kNvwHo12h3&_nc_oc=Adpi3s8kajof43_-YW-jWDYX92_4c57lXVXAIxq4hhwgIY9umDG4OpQVGZqFDziF1n0&_nc_zt=1&_nc_ht=scontent.fpll10-1.fna&edm=AAT1rw8EAAAA&_nc_gid=rvIUpQ2d6o2T3BTkaszRJg&_nc_tpa=Q5bMBQGgACi3ifx8yp79vwVsSlSvhMEWsQ95FYe3fdJiera979USur-R5gukGkidpxaS6u7mxfNjMAJJUw&stp=c0.5000x0.5000f_dst-emg0_p1080x1350_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af1ItyNKbEhV93vtJnR2xne_AakyN9DQPFTirAAZ6NmmWg&oe=69DDB945" alt="card" loading="lazy">
         <div>
           <div class="ad-head">
             <span class="ad-name">Cíntia Chagas no Sintonia</span>
