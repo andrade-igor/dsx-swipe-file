@@ -735,7 +735,10 @@
     }
     .mobile-gate p strong { color: var(--accent-dark); }
     .mobile-gate .mobile-gate-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       background: var(--accent);
       color: #fff;
       border: none;
@@ -748,6 +751,11 @@
       cursor: pointer;
       letter-spacing: 0.02em;
       box-shadow: 0 2px 14px rgba(184, 137, 58, 0.25);
+    }
+    .mobile-gate-btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
     }
     .mobile-gate .mobile-gate-btn:hover {
       background: var(--accent-dark);
@@ -2543,9 +2551,9 @@
   <div class="mobile-gate-brand">DSX 2025 · Framework de Mídia de Performance</div>
   <div class="mobile-gate-eyebrow">Recomendação</div>
   <h2>Este documento é melhor no desktop.</h2>
-  <p>O framework tem tabelas densas, funis lado a lado, comparações visuais e gráficos — tudo pensado pra tela grande. No celular, o conteúdo perde leitura e dificulta a análise.</p>
-  <p><strong>Ou, se quiser consumir agora:</strong> baixe o documento em Markdown e jogue em uma IA (ChatGPT, Claude, etc.) pra conversar sobre o conteúdo. A versão Markdown foi pensada exatamente pra isso.</p>
-  <button id="downloadMDMobile" class="mobile-gate-btn">⬇ Baixar Markdown para IA</button>
+  <p>O framework tem tabelas complexas, funis lado a lado, comparações visuais e gráficos — tudo pensado pra tela grande. No celular, o conteúdo perde leitura e dificulta a análise.</p>
+  <p><strong>Ou, se quiser consumir agora:</strong> baixe o documento em Markdown e jogue em uma IA (ChatGPT, Claude, Gemini, Claude Code) pra conversar sobre o conteúdo. A versão Markdown foi pensada exatamente pra isso.</p>
+  <button id="downloadMDMobile" class="mobile-gate-btn"><svg class="mobile-gate-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v14M6 11l6 6 6-6M4 21h16"/></svg>Baixar Markdown para IA</button>
   <p class="mobile-gate-note">Abra este link de novo no computador quando puder — a leitura em tela grande é outra.</p>
 </div>
 
