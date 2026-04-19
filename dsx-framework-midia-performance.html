@@ -802,7 +802,7 @@
 
   @media print {
     @page { size: A4; margin: 14mm 10mm; }
-    .ai-notice, .mobile-gate, .download-strip { display: none !important; }
+    .ai-notice, .mobile-gate, .download-strip, .doc-value-card, .side-nav { display: none !important; }
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -4977,7 +4977,7 @@
 <script>
   function buildMarkdown() {
     const clone = document.body.cloneNode(true);
-    clone.querySelectorAll('.mobile-gate, .download-strip, .side-nav, script, style, .ai-notice-human').forEach(el => el.remove());
+    clone.querySelectorAll('.mobile-gate, .download-strip, .side-nav, .doc-value-card, script, style, .ai-notice-human').forEach(el => el.remove());
 
     const escHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const txt = el => (el ? el.textContent.trim() : '');
