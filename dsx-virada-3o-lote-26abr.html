@@ -10,12 +10,12 @@
   :root {
     /* Ink layers — black profundo + grafite */
     --ink: #000000;
-    --ink-1: #07070a;
-    --ink-2: #0c0c10;
-    --ink-3: #121217;
-    --slate-1: #1a1a1f;
-    --slate-2: #22222a;
-    --slate-3: #2c2c36;
+    --ink-1: #16161c;
+    --ink-2: #1c1c23;
+    --ink-3: #22222a;
+    --slate-1: #28282f;
+    --slate-2: #2e2e36;
+    --slate-3: #34343d;
 
     /* Hairlines */
     --rule-strong: rgba(255,255,255,0.14);
@@ -76,15 +76,16 @@
     z-index: 2;
     border-top: 3px solid var(--orange);
     box-shadow:
-      0 0 0 1px rgba(255,255,255,0.04),
-      0 24px 80px -20px rgba(0,0,0,0.95),
-      0 8px 32px rgba(0,0,0,0.6);
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 32px 100px -24px rgba(0,0,0,0.98),
+      0 12px 40px rgba(0,0,0,0.7),
+      inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
   /* ========== HEADER ========== */
   .header {
     padding: 44px 48px 36px;
-    background: linear-gradient(180deg, var(--ink-3) 0%, var(--ink-2) 100%);
+    background: linear-gradient(180deg, #2a2a32 0%, var(--ink-2) 100%);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
