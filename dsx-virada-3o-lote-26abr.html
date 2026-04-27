@@ -870,7 +870,7 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.12);
       border-bottom: none;
-      padding: 16px 12px;
+      padding: 22px 14px;
     }
     .creative-kpi:nth-child(1) {
       grid-column: 1 / -1;
@@ -882,6 +882,11 @@
       grid-column: 1 / -1;
       border-bottom: 1px solid rgba(255,255,255,0.12);
     }
+    .creative-kpi span { font-size: 10px; letter-spacing: 2.2px; margin-bottom: 12px; }
+    .creative-kpi strong {
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
 
     /* Funnel em mobile: 1 coluna empilhada */
     .funnel-steps, .funnel-steps.funnel-4 {
@@ -891,13 +896,15 @@
     .funnel-s {
       border: 1px solid rgba(255,255,255,0.12);
       border-bottom: none;
+      padding: 14px 10px;
     }
     .funnel-s:last-child {
       border-bottom: 1px solid rgba(255,255,255,0.12);
     }
     .funnel-s.last { border-color: var(--orange); }
     .funnel-s::after { display: none; }
-    .funnel-s-v { font-size: 18px; }
+    .funnel-s-v { font-size: 16px; }
+    .funnel-s-n { font-size: 10px; }
   }
 
   @media print {
