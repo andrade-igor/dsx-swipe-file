@@ -790,6 +790,7 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.03em;
     line-height: 1;
+    white-space: nowrap;
   }
 
   .campeao-stat-cac strong { color: var(--gold-light); }
@@ -868,6 +869,11 @@
     .campeoes-list .campeao-card:nth-child(4),
     .campeoes-list .campeao-card:nth-child(5) { grid-column: auto; }
     .campeao-name { min-height: 32px; }
+    .campeao-card { padding: 10px; }
+    .campeao-stats { gap: 3px; }
+    .campeao-stat-cac, .campeao-stat-roas { padding: 7px 4px; }
+    .campeao-stats strong { font-size: 15px; letter-spacing: -0.04em; }
+    .campeao-stats span { font-size: 8px; letter-spacing: 0.4px; margin-bottom: 2px; }
     .footer { flex-direction: column; gap: 6px; align-items: flex-start; }
   }
 
