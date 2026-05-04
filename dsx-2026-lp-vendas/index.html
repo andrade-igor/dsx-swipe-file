@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSX 2026 · LP Vendas Direta · Wireframe</title>
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-dark: #15283f;
+    --accent: #b8893a;
+    --accent-dark: #8a6528;
+    --cream: #faf8f3;
+    --cream-alt: #f3efe6;
+    --text: #1a1f2e;
+    --text-dim: #5a6275;
+    --text-mute: #8a8f9c;
+    --border: #e8e3d7;
+    --white: #ffffff;
+    --warning: #c85c5c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; line-height: 1.15; letter-spacing: -0.01em; }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  .btn {
+    display: inline-block; padding: 16px 32px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;
+    border-radius: 4px; text-decoration: none; cursor: pointer; border: 0;
+  }
+  .btn-primary { background: var(--accent); color: var(--white); }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-block { display: block; width: 100%; text-align: center; padding: 18px; font-size: 15px; }
+  .placeholder { background: var(--cream-alt); border: 1px dashed var(--border); padding: 24px; border-radius: 4px; color: var(--text-mute); font-style: italic; text-align: center; }
+  .small-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
+
+  /* ============ SEÇÃO 0 — HEADER STICKY ============ */
+  .sticky-header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy-dark); color: var(--white);
+    padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px;
+  }
+  .countdown { font-weight: 600; letter-spacing: 0.04em; }
+  .countdown-units { display: inline-flex; gap: 4px; margin-left: 8px; }
+  .countdown-unit { background: var(--accent); padding: 4px 8px; border-radius: 3px; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .header-cta { background: var(--accent); color: var(--white); padding: 8px 16px; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ============ SEÇÃO 1 — HERO (split, alinhado à esquerda) ============ */
+  .hero {
+    background:
+      radial-gradient(ellipse at 100% 50%, rgba(184, 137, 58, 0.18) 0%, transparent 50%),
+      linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+    color: var(--white); padding: 80px 20px;
+    border-bottom: 0;
+    overflow: hidden;
+  }
+  .hero-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr; gap: 40px;
+    align-items: center;
+  }
+  .hero-content { text-align: left; max-width: 720px; }
+  .hero .tagline { color: var(--accent); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; margin-bottom: 28px; display: inline-block; }
+  .hero-meta-pre { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; font-size: 14px; color: rgba(255,255,255,0.85); }
+  .hero-meta-pre .row { display: flex; align-items: center; gap: 10px; }
+  .hero-meta-pre .icon {
+    width: 28px; height: 28px;
+    border: 1px solid rgba(184, 137, 58, 0.4);
+    border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 14px; flex-shrink: 0;
+  }
+  .hero-meta-pre strong { color: var(--white); font-weight: 700; margin-right: 6px; }
+  .hero h1 { font-size: 42px; font-weight: 600; margin-bottom: 20px; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.01em; }
+  .hero h1 em { color: var(--accent); font-style: italic; text-transform: none; }
+  .hero .sub { font-size: 17px; color: rgba(255,255,255,0.85); margin-bottom: 32px; max-width: 560px; }
+  .hero .when-where { font-size: 14px; opacity: 0.7; margin-top: 28px; letter-spacing: 0.04em; }
+  .hero-visual {
+    aspect-ratio: 4/5;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 480px;
+    width: 100%;
+    justify-self: end;
+    position: relative;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.4);
+  }
+  .hero-visual img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(21, 40, 63, 0.6) 100%);
+    pointer-events: none;
+  }
+
+  /* ============ SEÇÃO 1.5 — MANIFESTO (split com imagem) ============ */
+  .manifesto {
+    background: var(--cream);
+    padding: 96px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .manifesto-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr; gap: 48px;
+    align-items: center;
+  }
+  .manifesto-image {
+    aspect-ratio: 4/5;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 48px -16px rgba(30, 58, 95, 0.25);
+    max-width: 480px; width: 100%;
+  }
+  .manifesto-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .manifesto-image::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(21, 40, 63, 0.4) 100%);
+    pointer-events: none;
+  }
+  .manifesto-image .caption {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.3;
+    z-index: 2;
+    letter-spacing: -0.01em;
+  }
+  .manifesto-image .caption::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--accent); margin-bottom: 10px;
+  }
+  .manifesto-eyebrow {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .manifesto-eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--accent);
+  }
+  .manifesto-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+  }
+  .manifesto-headline strong {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--accent-dark);
+    background: linear-gradient(180deg, transparent 60%, rgba(184, 137, 58, 0.25) 60%);
+    padding: 0 4px;
+  }
+  .manifesto-sub {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-dark);
+    line-height: 1.3;
+    margin-bottom: 28px;
+    letter-spacing: -0.015em;
+  }
+  .manifesto-corpo {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+  }
+  .manifesto-corpo strong { color: var(--text); font-weight: 700; }
+  .manifesto-assinatura {
+    margin-top: 36px;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-mute); font-weight: 700;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .manifesto-assinatura::before {
+    content: ''; width: 32px; height: 1px; background: var(--text-mute);
+  }
+  @media (min-width: 900px) {
+    .manifesto-grid { grid-template-columns: 1fr 1.2fr; gap: 80px; }
+    .manifesto-image { max-width: none; }
+    .manifesto-headline { font-size: 56px; }
+  }
+
+  /* ============ SEÇÃO 2 — PRA QUEM É (DOR) — escaneável ============ */
+  .dor { background: var(--white); padding: 96px 24px; }
+  .dor-inner { max-width: 1200px; margin: 0 auto; }
+  .dor h2 {
+    font-size: 36px; margin-bottom: 56px; line-height: 1.05;
+    letter-spacing: -0.02em; max-width: 880px;
+  }
+  .dor-grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: 16px; margin-bottom: 40px;
+  }
+  .dor-card {
+    background: var(--cream);
+    padding: 36px 32px;
+    border-radius: 6px;
+    position: relative;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+  }
+  .dor-card:hover { transform: translateY(-2px); }
+  .dor-card .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--accent);
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 18px;
+    display: block;
+  }
+  .dor-card h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .dor-card p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin: 0;
+  }
+  /* Cards invertidos pra quebrar ritmo (escaneabilidade) */
+  .dor-card.invert {
+    background: var(--navy-dark);
+    color: var(--white);
+  }
+  .dor-card.invert .num { color: var(--accent); }
+  .dor-card.invert h3 { color: var(--white); }
+  .dor-card.invert p { color: rgba(255,255,255,0.75); }
+  @media (min-width: 720px) {
+    .dor-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .dor h2 { font-size: 48px; }
+    .dor-card h3 { font-size: 28px; }
+  }
+  @media (min-width: 1024px) {
+    .dor-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  /* ============ SEÇÃO 3 — O QUE É O DSX (split com mosaico) ============ */
+  .sobre {
+    background: var(--cream-alt);
+    padding: 96px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sobre-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr; gap: 56px;
+    align-items: center;
+  }
+  .sobre-copy h2 {
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+  .sobre-copy p {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: var(--text-dim);
+  }
+  .sobre-copy p strong { color: var(--text); font-weight: 700; }
+  .sobre-copy .destaque {
+    font-size: 28px; font-family: 'Fraunces', serif;
+    color: var(--accent); font-style: italic;
+    margin-top: 32px;
+  }
+  /* mosaico de 3 fotos sobrepostas */
+  .sobre-mosaic {
+    position: relative;
+    aspect-ratio: 1/1.05;
+    width: 100%;
+    max-width: 520px;
+    justify-self: center;
+  }
+  .sobre-mosaic .photo {
+    position: absolute;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -12px rgba(30, 58, 95, 0.35);
+    background: linear-gradient(135deg, var(--navy-dark), var(--accent-dark));
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter';
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    text-align: center;
+    padding: 18px;
+    border: 4px solid var(--cream-alt);
+  }
+  .sobre-mosaic .photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .sobre-mosaic .photo-1 {
+    top: 0; left: 0;
+    width: 64%; aspect-ratio: 4/3;
+    transform: rotate(-2.5deg);
+    z-index: 1;
+  }
+  .sobre-mosaic .photo-2 {
+    top: 28%; right: 0;
+    width: 58%; aspect-ratio: 1/1;
+    transform: rotate(3deg);
+    z-index: 3;
+  }
+  .sobre-mosaic .photo-3 {
+    bottom: 0; left: 8%;
+    width: 70%; aspect-ratio: 4/3;
+    transform: rotate(-1.5deg);
+    z-index: 2;
+  }
+
+  /* ============ SEÇÃO 4 — 5 EIXOS DE APRENDIZADO ============ */
+  .eixos {
+    background: var(--navy);
+    color: var(--white);
+    padding: 96px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .eixos::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(184, 137, 58, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .eixos-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .eixos-head {
+    margin-bottom: 64px;
+    max-width: 880px;
+  }
+  .eixos h2 {
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .eixos h2 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+  }
+  .eixos-sub {
+    font-size: 17px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 640px;
+  }
+  /* ============ LAYOUT RADIAL COM ELEMENTO TIPOGRÁFICO CENTRAL ============ */
+  .eixos-radial {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .eixo-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+    min-height: 220px;
+    z-index: 2;
+  }
+  .eixo-card:hover {
+    background: rgba(184, 137, 58, 0.07);
+    border-color: rgba(184, 137, 58, 0.5);
+    transform: translateY(-3px);
+  }
+  .eixo-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 80px;
+    line-height: 0.85;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    display: block;
+    opacity: 0.95;
+  }
+  .eixo-card h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .eixo-card p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  /* CENTRO RADIAL — apenas desktop */
+  .eixos-center {
+    display: none;
+  }
+  .eixos-cta {
+    margin-top: 56px;
+    text-align: left;
+  }
+  /* Layout radial em desktop: cards nos 4 cantos + centro + destaque embaixo */
+  @media (min-width: 900px) {
+    .eixos h2 { font-size: 56px; }
+    .eixos-radial {
+      grid-template-columns: 1fr 1.1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .eixo-card { padding: 40px 32px; min-height: 280px; }
+    .eixo-card h3 { font-size: 26px; }
+    .eixo-card p { font-size: 15px; }
+    /* 4 cantos + 1 centro-baixo, todos com mesmo peso */
+    .eixo-card:nth-child(1) { grid-column: 1; grid-row: 1; }   /* 01 — top-left */
+    .eixo-card:nth-child(2) { grid-column: 3; grid-row: 1; }   /* 02 — top-right */
+    .eixo-card:nth-child(3) { grid-column: 1; grid-row: 2; }   /* 03 — mid-left */
+    .eixo-card:nth-child(4) { grid-column: 3; grid-row: 2; }   /* 04 — mid-right */
+    .eixo-card:nth-child(6) { grid-column: 2; grid-row: 3; }   /* 05 — center-bottom */
+    /* Centro tipográfico massivo */
+    .eixos-center {
+      display: flex;
+      grid-column: 2;
+      grid-row: 1 / 3;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .dsx-mark {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      line-height: 0.95;
+      text-align: left;
+      position: relative;
+    }
+    .dsx-mark::before {
+      content: '';
+      position: absolute;
+      inset: -60px;
+      background: radial-gradient(circle, rgba(184, 137, 58, 0.18) 0%, transparent 65%);
+      z-index: -1;
+      animation: glow 4s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    .dsx-mark .word {
+      display: block;
+      font-weight: 300;
+      font-size: 56px;
+      color: rgba(255, 255, 255, 0.45);
+      letter-spacing: -0.025em;
+      margin-bottom: 4px;
+    }
+    .dsx-mark .word .initial {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.35em;
+      letter-spacing: -0.04em;
+      text-shadow:
+        0 0 40px rgba(184, 137, 58, 0.5),
+        0 0 80px rgba(184, 137, 58, 0.25);
+    }
+    .dsx-mark .word .rest {
+      margin-left: -0.05em;
+    }
+    .eixos-center-label {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(184, 137, 58, 0.85);
+      text-align: center;
+      max-width: 200px;
+      line-height: 1.4;
+    }
+    /* Linhas conectoras saindo do centro pros 4 cards */
+    .eixos-radial::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        /* linha pro card 1 (top-left) */
+        linear-gradient(135deg, transparent calc(50% - 0.5px), rgba(184, 137, 58, 0.18) calc(50% - 0.5px), rgba(184, 137, 58, 0.18) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+      mask-image: radial-gradient(circle at center, transparent 80px, black 80px, black calc(100% - 200px), transparent calc(100% - 200px));
+      opacity: 0;
+    }
+    /* Linha 3 só pro card 5 centralizado */
+    .eixos-radial { grid-template-rows: 1fr 1fr 1fr; }
+  }
+
+  /* ============ SEÇÃO 5 — PALESTRANTES (streams infinitos) ============ */
+  .palestrantes {
+    background: var(--navy-dark);
+    color: var(--white);
+    padding: 96px 0;
+    overflow: hidden;
+  }
+  .palestrantes-head {
+    max-width: 880px;
+    margin: 0 auto 56px;
+    padding: 0 24px;
+  }
+  .palestrantes h2 {
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .palestrantes h2 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+  }
+  .palestrantes-sub {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 17px;
+    line-height: 1.5;
+    max-width: 640px;
+  }
+  /* Streams infinitos */
+  .pal-stream {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 16px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+  }
+  .pal-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    will-change: transform;
+  }
+  .pal-track--left { animation: scroll-left 80s linear infinite; }
+  .pal-track--right { animation: scroll-right 90s linear infinite; }
+  .pal-stream:hover .pal-track { animation-play-state: paused; }
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  .pal-card {
+    flex: 0 0 auto;
+    width: 220px;
+    aspect-ratio: 4/5;
+    background: var(--navy);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.25s ease;
+  }
+  .pal-card:hover {
+    transform: scale(1.04);
+    z-index: 3;
+  }
+  .pal-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    filter: grayscale(25%) contrast(1.05);
+    transition: filter 0.3s ease;
+  }
+  .pal-card:hover img {
+    filter: grayscale(0%) contrast(1);
+  }
+  .pal-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(10, 8, 12, 0.95) 100%);
+    pointer-events: none;
+  }
+  .pal-card .name {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    right: 14px;
+    z-index: 2;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.1;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .pal-counter {
+    margin: 48px auto 0;
+    padding: 0 24px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.3;
+    max-width: 720px;
+  }
+  .pal-counter strong {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+  }
+  .palestrantes-cta {
+    margin-top: 48px;
+    text-align: center;
+    padding: 0 24px;
+  }
+  @media (min-width: 768px) {
+    .palestrantes h2 { font-size: 56px; }
+    .pal-card { width: 260px; }
+    .pal-card .name { font-size: 17px; bottom: 14px; }
+  }
+
+  /* ============ SEÇÃO 6 — PROVA SOCIAL 2025 (editorial magazine) ============ */
+  .prova {
+    background: var(--cream);
+    color: var(--text);
+    padding: 96px 24px;
+  }
+  .prova-inner { max-width: 1200px; margin: 0 auto; }
+  .prova-head {
+    margin-bottom: 80px;
+    max-width: 880px;
+  }
+  .prova h2 {
+    font-size: 40px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .prova h2 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent-dark);
+    letter-spacing: -0.03em;
+  }
+  .prova-sub {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-dim);
+    max-width: 640px;
+  }
+  /* KPIs gigantes editorial */
+  .prova-numeros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 80px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .prova-num {
+    padding: 32px 24px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .prova-num:nth-child(2n) { border-right: 0; }
+  .prova-num:nth-last-child(-n+2) { border-bottom: 0; }
+  .prova-num .big {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.85;
+    letter-spacing: -0.025em;
+    color: var(--accent-dark);
+  }
+  .prova-num .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-mute);
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  /* Galeria bento */
+  .galeria-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .galeria-head h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .galeria {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 200px;
+    gap: 12px;
+    margin-bottom: 80px;
+  }
+  .galeria .media {
+    background: linear-gradient(135deg, var(--cream-alt), #ede1cd);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: flex-start;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .galeria .media img,
+  .galeria .media video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .galeria .media .label {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,0.9);
+    padding: 6px 10px;
+    border-radius: 3px;
+    margin: 16px;
+  }
+  .galeria .media.has-video .label::before {
+    content: '▶ ';
+    color: var(--accent-dark);
+    margin-right: 4px;
+  }
+  /* Aspectos diferentes dos blocos */
+  .galeria .media.tall { grid-row: span 2; }
+  .galeria .media.wide { grid-column: span 2; }
+  /* Depoimentos — suportam 2 formatos: vídeo vertical e print WhatsApp */
+  .depoimentos h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .depoimentos-sub {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 40px;
+    max-width: 560px;
+  }
+  .depo-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .depo-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px -8px rgba(30, 58, 95, 0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Formato VÍDEO — vertical 9:16 estilo Reels/Stories */
+  .depo-video-wrap {
+    aspect-ratio: 9/16;
+    background: linear-gradient(135deg, var(--navy-dark), var(--accent-dark));
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .depo-video-wrap video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .depo-video-wrap::after {
+    content: '▶';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.95);
+    color: var(--accent-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    padding-left: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    pointer-events: none;
+    transition: transform 0.2s;
+  }
+  .depo-video-wrap:hover::after {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  .depo-video-wrap.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.6);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 20px;
+  }
+  /* Formato PRINT — bolha WhatsApp */
+  .depo-print {
+    background: #e7f3e8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    color: var(--text);
+    position: relative;
+  }
+  .depo-print::before {
+    content: '';
+    position: absolute;
+    bottom: 0; right: -6px;
+    width: 12px; height: 14px;
+    background: #e7f3e8;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+  }
+  .depo-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    color: var(--text-mute);
+    text-align: right;
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+  }
+  .depo-card .autor {
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+  }
+  .depo-card .autor .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--cream-alt);
+    flex-shrink: 0;
+  }
+  .depo-card .autor strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .prova-cta {
+    margin-top: 56px;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .prova h2 { font-size: 64px; }
+    .prova-numeros { grid-template-columns: repeat(4, 1fr); }
+    .prova-num { border-bottom: 0; padding: 40px 28px; }
+    .prova-num .big { font-size: 80px; }
+    .galeria { grid-template-columns: repeat(4, 1fr); }
+    .galeria .media.wide { grid-column: span 2; }
+    .galeria .media.tall { grid-row: span 2; }
+    .depo-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ============ SEÇÃO 7 — OBJEÇÃO EMOCIONAL ============ */
+  .objecao { background: var(--navy-dark); color: var(--white); text-align: center; }
+  .objecao h2 { font-size: 32px; font-style: italic; margin-bottom: 24px; color: var(--white); }
+  .objecao p { font-size: 17px; color: rgba(255,255,255,0.85); margin-bottom: 16px; max-width: 580px; margin-left: auto; margin-right: auto; }
+
+  /* ============ SEÇÃO 8 — BÔNUS (alternado com mockup, estilo feature) ============ */
+  .bonus {
+    background: var(--white);
+    padding: 96px 24px;
+  }
+  .bonus-inner { max-width: 1200px; margin: 0 auto; }
+  .bonus-head {
+    margin-bottom: 64px;
+    text-align: center;
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .bonus h2 {
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .bonus h2 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ember-deep, #c8421f);
+    color: var(--accent-dark);
+    letter-spacing: -0.03em;
+  }
+  .bonus-sub {
+    font-size: 18px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-top: 16px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .bonus-total {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    background: var(--cream-alt);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+  .bonus-total strong {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .bonus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  /* Card alternado */
+  .bonus-item {
+    border-radius: 12px;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .bonus-content .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.7;
+  }
+  .bonus-content h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    margin-bottom: 14px;
+  }
+  .bonus-content h3 .accent-mark {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: 4px;
+  }
+  .bonus-content p {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+  .bonus-preco {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .bonus-preco .risco { text-decoration: line-through; opacity: 0.55; }
+  .bonus-preco .free {
+    background: currentColor;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+  .bonus-preco .free span {
+    color: var(--white);
+    mix-blend-mode: difference;
+    filter: invert(1);
+  }
+  /* Mockup (slot pra imagem do bônus) */
+  .bonus-mockup {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.4);
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bonus-mockup img,
+  .bonus-mockup video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Variações por bônus — identidades visuais diferentes (regra Júnior) */
+  .bonus-1 {
+    background: linear-gradient(135deg, #fff5e0, #f5ead0);
+    color: var(--char, #2a1f17);
+  }
+  .bonus-1 .bonus-content .num { color: var(--accent-dark); }
+  .bonus-1 .bonus-mockup { background: var(--navy-dark); color: rgba(255,255,255,0.5); }
+
+  .bonus-2 {
+    background: linear-gradient(135deg, #1e3a5f 0%, #15283f 100%);
+    color: var(--white);
+  }
+  .bonus-2 .bonus-content .num { color: var(--accent); }
+  .bonus-2 .bonus-mockup {
+    background:
+      radial-gradient(circle at 30% 40%, rgba(184, 137, 58, 0.25) 0%, transparent 60%),
+      rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .bonus-3 {
+    background: linear-gradient(135deg, #e7f3e8 0%, #c9e3ca 100%);
+    color: var(--char, #2a1f17);
+  }
+  .bonus-3 .bonus-content .num { color: #2e5c2e; }
+  .bonus-3 .bonus-mockup { background: rgba(46, 92, 46, 0.15); color: rgba(46, 92, 46, 0.55); }
+
+  .bonus-4 {
+    background: linear-gradient(135deg, #b8893a 0%, #8a6528 100%);
+    color: var(--white);
+  }
+  .bonus-4 .bonus-content .num { color: rgba(255, 255, 255, 0.85); }
+  .bonus-4 .bonus-mockup {
+    background: rgba(0, 0, 0, 0.18);
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .bonus-cta {
+    margin-top: 56px;
+    text-align: center;
+  }
+  /* Desktop: alternar lado do mockup (zigzag) */
+  @media (min-width: 768px) {
+    .bonus h2 { font-size: 56px; }
+    .bonus-list { gap: 32px; }
+    .bonus-item { grid-template-columns: 1.1fr 1fr; padding: 48px; gap: 56px; }
+    .bonus-content h3 { font-size: 30px; }
+    .bonus-content p { font-size: 16px; }
+    .bonus-mockup { aspect-ratio: 4/3; }
+    /* Inverter ordem nos pares (zigzag) */
+    .bonus-item:nth-child(even) .bonus-content { order: 2; }
+    .bonus-item:nth-child(even) .bonus-mockup { order: 1; }
+  }
+
+  /* ============ SEÇÃO 9 — OFERTA 3 PLANOS (VIP · Standard · Grupo) ============ */
+  .oferta {
+    background: var(--cream-alt);
+    padding: 96px 24px;
+  }
+  .oferta-inner { max-width: 1200px; margin: 0 auto; }
+  .oferta-head {
+    text-align: center;
+    margin-bottom: 56px;
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .oferta h2 {
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .oferta h2 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent-dark);
+  }
+  .oferta .scarcity {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    background: rgba(200, 92, 92, 0.1);
+    border: 1px solid rgba(200, 92, 92, 0.35);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warning);
+  }
+  .oferta .scarcity .pulse-dot {
+    width: 8px; height: 8px;
+    background: var(--warning);
+    border-radius: 50%;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  /* Grid 3 colunas */
+  .planos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .plano {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 32px;
+    border-radius: 12px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .plano:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -12px rgba(30, 58, 95, 0.15);
+  }
+  .plano.destaque {
+    border: 2px solid var(--accent);
+    background: linear-gradient(180deg, var(--white) 0%, #fbf8f0 100%);
+    box-shadow: 0 12px 32px -8px rgba(184, 137, 58, 0.25);
+  }
+  .plano.destaque .plano-tag {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--white);
+    padding: 6px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .plano-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .plano.destaque .plano-eyebrow { color: var(--accent-dark); }
+  .plano h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .plano-pitch {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    min-height: 60px;
+  }
+  .plano-preco {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    margin-bottom: 24px;
+  }
+  .plano-preco .moeda {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-dim);
+    vertical-align: top;
+    margin-right: 4px;
+    position: relative;
+    top: 14px;
+  }
+  .plano-preco .por {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+  }
+  .plano-preco .por .cents {
+    font-size: 0.45em;
+    vertical-align: top;
+    margin-left: 4px;
+    position: relative;
+    top: 12px;
+  }
+  .plano-preco .parcela {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .plano-preco .parcela strong { color: var(--text); font-weight: 700; }
+  .plano-preco .por-pessoa {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-bottom: 4px;
+  }
+  .plano-itens {
+    list-style: none;
+    margin-bottom: 24px;
+    flex: 1;
+  }
+  .plano-itens li {
+    padding: 8px 0;
+    font-size: 14px;
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .plano-itens li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .plano-itens li.highlight {
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
+  .plano-itens li.highlight::before { color: var(--accent-dark); }
+  .plano-cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+  .plano-cta:hover { background: var(--accent-dark); }
+  .plano:not(.destaque) .plano-cta {
+    background: transparent;
+    color: var(--accent-dark);
+    border: 2px solid var(--accent);
+  }
+  .plano:not(.destaque) .plano-cta:hover {
+    background: var(--accent);
+    color: var(--white);
+  }
+  .plano-extra {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    font-style: italic;
+  }
+  .plano-extra a { color: var(--accent-dark); text-decoration: underline; }
+  /* Cards não devem expandir além da coluna por causa do conteúdo */
+  .plano { min-width: 0; }
+  /* CTA sempre na base */
+  .plano-cta { margin-top: auto; }
+  /* Plano sem preço (Grupo) — bloco substituto */
+  .plano-talk {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+  .plano-talk-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-bottom: 10px;
+  }
+  .plano-talk-pitch {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .plano-talk-pitch strong {
+    color: var(--accent-dark);
+    font-weight: 600;
+    font-style: normal;
+  }
+  /* Desktop: 3 colunas alinhadas (topo + base) */
+  @media (min-width: 720px) {
+    .oferta h2 { font-size: 56px; }
+    .planos {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .plano { padding: 28px 24px; }
+    .plano h3 { font-size: 26px; }
+    .plano-pitch { font-size: 13px; min-height: 92px; }
+    .plano-itens li { font-size: 13.5px; }
+    /* Standard mantém destaque visual sem deslocar verticalmente */
+  }
+  @media (min-width: 1024px) {
+    .planos { gap: 20px; }
+    .plano { padding: 32px; }
+    .plano h3 { font-size: 32px; }
+    .plano-pitch { font-size: 14px; min-height: 80px; }
+    .plano-itens li { font-size: 14px; }
+  }
+
+  /* ============ SEÇÃO 10 — GARANTIA ============ */
+  .garantia { background: var(--white); text-align: center; }
+  .garantia .selo { width: 120px; height: 120px; border: 3px solid var(--accent); border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 13px; color: var(--accent-dark); text-align: center; padding: 12px; line-height: 1.2; font-weight: 600; }
+  .garantia h2 { font-size: 28px; margin-bottom: 12px; }
+  .garantia p { color: var(--text-dim); max-width: 540px; margin: 0 auto 12px; }
+
+  /* ============ SEÇÃO 11 — QUEM ORGANIZA ============ */
+  .organiza { background: var(--cream-alt); }
+  .organiza h2 { font-size: 28px; margin-bottom: 24px; }
+  .organiza-card { background: var(--white); padding: 28px; border-radius: 6px; }
+  .organiza-card h3 { font-family: 'Inter'; font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+
+  /* ============ SEÇÃO 12 — CTA FINAL ============ */
+  .cta-final { background: var(--navy-dark); color: var(--white); text-align: center; }
+  .cta-final h2 { font-size: 38px; color: var(--white); margin-bottom: 16px; }
+  .cta-final h2 em { color: var(--accent); font-style: italic; }
+  .cta-final .resumo { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 32px 0; font-size: 14px; }
+  .cta-final .resumo span { color: var(--accent); font-weight: 700; }
+  .cta-final .ctas { display: grid; gap: 12px; max-width: 380px; margin: 0 auto; }
+  .btn-secondary { background: transparent; color: var(--white); border: 2px solid var(--accent); }
+
+  /* ============ SEÇÃO 13 — FAQ ============ */
+  .faq { background: var(--white); }
+  .faq h2 { font-size: 28px; margin-bottom: 32px; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; }
+  .faq-item summary { font-weight: 700; font-size: 16px; cursor: pointer; list-style: none; padding-right: 24px; position: relative; }
+  .faq-item summary::after { content: '+'; position: absolute; right: 0; top: 0; font-size: 22px; color: var(--accent); }
+  .faq-item[open] summary::after { content: '−'; }
+  .faq-item p { padding-top: 12px; color: var(--text-dim); font-size: 15px; }
+
+  /* ============ SEÇÃO 14 — FOOTER (suporte discreto) ============ */
+  footer { background: var(--navy-dark); color: rgba(255,255,255,0.6); padding: 40px 20px; text-align: center; font-size: 13px; }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+  footer .footer-links { margin: 12px 0; }
+  footer .footer-links a { margin: 0 10px; }
+
+  /* ============ DESKTOP ============ */
+  @media (min-width: 768px) {
+    .hero { padding: 100px 32px; }
+    .hero-grid { grid-template-columns: 1.2fr 1fr; gap: 64px; }
+    .hero h1 { font-size: 56px; }
+    .hero-visual { aspect-ratio: 4/5; max-width: none; }
+    .sobre-grid { grid-template-columns: 1.1fr 1fr; gap: 96px; }
+    .sobre-copy h2 { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================
+     SEÇÃO 0 — HEADER STICKY (countdown sempre visível)
+     ==================================================================== -->
+<header class="sticky-header">
+  <div class="countdown">
+    LOTE ATUAL ENCERRA EM
+    <span class="countdown-units">
+      <span class="countdown-unit">15D</span>
+      <span class="countdown-unit">07H</span>
+      <span class="countdown-unit">42M</span>
+      <span class="countdown-unit">11S</span>
+    </span>
+  </div>
+  <a href="#oferta" class="header-cta">Garantir vaga</a>
+</header>
+
+<!-- ====================================================================
+     SEÇÃO 1 — HERO
+     TOM: pertencimento. O DSX nasceu aqui, é de quem constrói aqui.
+     Protagonista é o empresário do Norte, não o palestrante de fora.
+     promessa + mecanismo + tagline + CTA. SEM PREÇO.
+     ==================================================================== -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="tagline">Do Norte para o Brasil</div>
+      <div class="hero-meta-pre">
+        <div class="row"><span class="icon">📅</span> <span><strong>23 e 24 DE JULHO</strong> · Credenciamento e programação completa</span></div>
+        <div class="row"><span class="icon">📍</span> <span>Centro de Convenções Vasco Vasques · Manaus/AM</span></div>
+      </div>
+      <h1>O MAIOR EVENTO DE NEGÓCIOS, MARKETING, VENDAS E INOVAÇÃO <em>do Norte</em></h1>
+      <p class="sub">Em 2 dias, +40 dos maiores nomes do Brasil em negócios, marketing, vendas e inovação te entregam os atalhos que levariam anos pra descobrir sozinho. Sem sair de Manaus.</p>
+      <a href="#oferta" class="btn btn-primary">Quero fazer parte</a>
+    </div>
+    <div class="hero-visual">
+      <img src="img/hero-teatro-amazonas.jpg" alt="DSX nasceu em Manaus. Teatro Amazonas">
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 2 — PRA QUEM É (POR DOR, NÃO POR PERFIL)
+     6 dores em grid. Identificação imediata após o hero.
+     Vem ANTES de "o que é o DSX" pra filtrar quem não é público.
+     ==================================================================== -->
+<section class="dor">
+  <div class="dor-inner">
+    <div class="small-label">Pra quem é</div>
+    <h2>Se você se vê em alguma dessas, o DSX é pra você.</h2>
+    <div class="dor-grid">
+      <div class="dor-card">
+        <span class="num">01</span>
+        <h3>Tudo de bom acontece em SP/RJ.</h3>
+        <p>E quando chega aqui, já tá saturado, fora de moda ou desconectado da nossa realidade.</p>
+      </div>
+      <div class="dor-card invert">
+        <span class="num">02</span>
+        <h3>Você é o mais experiente da sala.</h3>
+        <p>Não tem com quem trocar ideia em outro nível. Sua equipe não dá conta, e quem decide o jogo tá longe demais.</p>
+      </div>
+      <div class="dor-card">
+        <span class="num">03</span>
+        <h3>Já saiu de evento de mãos vazias.</h3>
+        <p>Foi pra ouvir palestra, voltou com 4 horas de motivação na cabeça, zero conexão real. Sentiu que perdeu o dia.</p>
+      </div>
+      <div class="dor-card invert">
+        <span class="num">04</span>
+        <h3>Você implementa estratégia no escuro.</h3>
+        <p>Testa tudo do zero porque não tem com quem comparar nota. O profissional de SP já tem referência. Você tem o Google.</p>
+      </div>
+      <div class="dor-card">
+        <span class="num">05</span>
+        <h3>Sua carreira (ou empresa) tá patinando.</h3>
+        <p>Mesma rotina, mesmas caras, mesmas mesas. Faz tempo que não abre porta nova. Nem cliente, nem indicação, nem oportunidade.</p>
+      </div>
+      <div class="dor-card">
+        <span class="num">06</span>
+        <h3>Pra subir, você precisa de contato que não tem.</h3>
+        <p>E no ritmo atual, vai levar mais tempo conhecendo gente nova do que executando o que já sabe.</p>
+      </div>
+    </div>
+    <a href="#oferta" class="btn btn-primary btn-block">Quero fazer parte</a>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 3 — O QUE É O DSX
+     TOM: pertencimento puro. Foi construído aqui, é de quem constrói aqui.
+     PROIBIDO: "RD Summit do Norte" / "trouxemos pra cá" / "evento de fora"
+     ==================================================================== -->
+<section class="sobre">
+  <div class="sobre-grid">
+    <div class="sobre-copy">
+      <div class="small-label">O Evento</div>
+      <h2>O que é o<br>DSX 2026?</h2>
+      <p>Um evento <strong>100% presencial</strong>, em 2 dias de imersão. Voltado pra empresário, gestor ou profissional que quer sair da bolha e voltar pra rotina com a cabeça em outro lugar.</p>
+      <p>Em 2 dias, <strong>+40 dos maiores nomes do Brasil</strong> em negócios, marketing, vendas e inovação no mesmo espaço. Pra trocar na real, com você na mesa, não no fundo da plateia.</p>
+      <p>Em 2025, a primeira edição lotou: <strong>2.083 pessoas</strong> e 11,8 milhões de impactos. Esse ano, a aposta dobrou. Mais palestrantes, mais espaço, mais conexão.</p>
+      <p>O DSX <strong>não é evento de motivação</strong>. É estratégia, network e parceria. Construído em Manaus, por gente daqui, pra quem faz negócio acontecer no Norte.</p>
+      <div class="destaque">"Do Norte para o Brasil"</div>
+    </div>
+    <div class="sobre-mosaic">
+      <div class="photo photo-1">
+        <!-- TROCAR src por foto real DSX 2025 (palco lotado / vista geral do evento) -->
+        [foto 1 · palco DSX 2025]
+      </div>
+      <div class="photo photo-2">
+        <!-- TROCAR src por foto real DSX 2025 (palestrante em ação / closeup) -->
+        [foto 2 · palestrante]
+      </div>
+      <div class="photo photo-3">
+        <!-- TROCAR src por foto real DSX 2025 (plateia / networking / corredores) -->
+        [foto 3 · plateia / networking]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 3.5 — MANIFESTO (educar: evento ≠ palestra)
+     Vem DEPOIS de "o que é o DSX" — agora que a pessoa já sabe que
+     é evento de 2 dias, o manifesto vira o jogo: explica que evento
+     bom não é palco e plateia, é mesa redonda. Educação + provocação.
+     ==================================================================== -->
+<section class="manifesto">
+  <div class="manifesto-grid">
+    <div class="manifesto-image">
+      <img src="img/manifesto-network.jpg" alt="Network e parceria real entre empresários e profissionais no DSX">
+      <div class="caption">"Não dá pra fazer sozinho o que o DSX faz em 2 dias."</div>
+    </div>
+    <div class="manifesto-copy">
+      <div class="manifesto-eyebrow">Manifesto</div>
+      <h2 class="manifesto-headline">Quem nunca foi acha que evento é <strong>só palestra</strong>.</h2>
+      <p class="manifesto-sub">Quem já foi sabe: o jogo muda no intervalo, no almoço, na fila do café.</p>
+      <p class="manifesto-corpo">
+        Tem informação que em Manaus custa caro. Não em dinheiro. É em tempo. O empresário que escalou sozinho levou <strong>anos</strong> pra descobrir como. O profissional de marketing testou 30 estratégias até achar a que funciona. O vendedor demorou meia carreira pra entender o jogo. Em 2 dias, eles te entregam isso de mão beijada.
+      </p>
+      <p class="manifesto-corpo">
+        E mais: você vai ter aquela <strong>conversa de 15 minutos</strong> que muda sua estratégia pros próximos meses. Vai ouvir a pergunta que ninguém nunca te fez. Vai descobrir que outro profissional aqui no Norte tá exatamente na sua dor. E já achou um caminho que você ainda nem testou. Não é palco e plateia. É mesa redonda.
+      </p>
+      <p class="manifesto-corpo">
+        Construído aqui. Por gente daqui. Pra fortalecer quem faz acontecer no Norte.
+      </p>
+      <div class="manifesto-assinatura">DSX 2026 · Manaus · Amazonas</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 4 — 5 EIXOS DE APRENDIZADO
+     Mecanismo único. Densidade.
+     ==================================================================== -->
+<section class="eixos">
+  <div class="eixos-inner">
+    <div class="eixos-head">
+      <div class="small-label" style="color: var(--accent);">O que você vai levar</div>
+      <h2>5 trilhas pra transformar<br>estratégia em <em>resultado.</em></h2>
+      <p class="eixos-sub">Conteúdo aplicado, distribuído em 5 frentes que cobrem o que tá movendo negócio em 2026. Cada trilha foi pensada pra você sair com plano de execução, não com slide de motivação.</p>
+    </div>
+
+    <div class="eixos-radial">
+      <div class="eixo-card">
+        <span class="eixo-num">01</span>
+        <h3>Vendas e Gestão Comercial</h3>
+        <p>Atrair clientes de alto valor, fechar contratos maiores e otimizar cada etapa do processo comercial. Estrutura, CRM e operação preparada pra escalar com previsibilidade.</p>
+      </div>
+
+      <div class="eixo-card">
+        <span class="eixo-num">02</span>
+        <h3>Posicionamento e Branding</h3>
+        <p>Construa uma autoridade inquestionável. Saiba como se tornar a referência máxima na sua área e destacar a sua marca em um mercado saturado.</p>
+      </div>
+
+      <div class="eixo-card">
+        <span class="eixo-num">03</span>
+        <h3>Marketing & Performance</h3>
+        <p>Domine o jogo da tração. Aprenda a estruturar tráfego pago, funis de venda, criativos de alta conversão e estratégias avançadas de automação.</p>
+      </div>
+
+      <div class="eixo-card">
+        <span class="eixo-num">04</span>
+        <h3>Inteligência Artificial</h3>
+        <p>Transforme a IA na sua maior vantagem competitiva. Otimize a produção, eleve a produtividade do time e conecte automações com decisões baseadas 100% em dados.</p>
+      </div>
+
+      <!-- Centro tipográfico — desdobra o nome DSX (só renderiza no desktop) -->
+      <div class="eixos-center">
+        <div class="dsx-mark">
+          <span class="word"><span class="initial">D</span><span class="rest">igital</span></span>
+          <span class="word"><span class="initial">S</span><span class="rest">ummit</span></span>
+          <span class="word"><span class="initial">X</span><span class="rest">perience</span></span>
+        </div>
+        <div class="eixos-center-label">5 trilhas. 1 movimento.</div>
+      </div>
+
+      <div class="eixo-card">
+        <span class="eixo-num">05</span>
+        <h3>Networking Cirúrgico</h3>
+        <p>A teoria aplicada na prática. Negocie direto com os mais de 2.000 decisores na nossa gigante Feira de Negócios. É aqui que palco vira contrato.</p>
+      </div>
+    </div>
+
+    <div class="eixos-cta">
+      <a href="#oferta" class="btn btn-primary">Quero fazer parte</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 5 — LINE-UP DE PALESTRANTES
+     Match palestrante × nicho. Top 4-6 em destaque.
+     ==================================================================== -->
+<section class="palestrantes">
+  <div class="palestrantes-head">
+    <div class="small-label" style="color: var(--accent);">Line-up</div>
+    <h2>Os <em>maiores nomes</em> do país.<br>No mesmo lugar.</h2>
+    <p class="palestrantes-sub">Os primeiros palestrantes confirmados pro DSX 2026. De food a creator economy, de gestão a posicionamento, de IA a finanças. Cada nome com cara, nome e quilometragem real de mercado.</p>
+  </div>
+
+  <!-- Stream 1 — esquerda (12 palestrantes, lista duplicada pra loop seamless) -->
+  <div class="pal-stream">
+    <div class="pal-track pal-track--left">
+      <!-- conjunto 1 -->
+      <div class="pal-card"><img src="img/palestrantes/joao-branco.png" alt="João Branco"><div class="name">João Branco</div></div>
+      <div class="pal-card"><img src="img/palestrantes/joao-kepler.png" alt="João Kepler"><div class="name">João Kepler</div></div>
+      <div class="pal-card"><img src="img/palestrantes/netao-bom-beef.png" alt="Netão Bom Beef"><div class="name">Netão Bom Beef</div></div>
+      <div class="pal-card"><img src="img/palestrantes/fernando-miranda.png" alt="Fernando Miranda"><div class="name">Fernando Miranda</div></div>
+      <div class="pal-card"><img src="img/palestrantes/nicolas-charao.png" alt="Nicolas Charão"><div class="name">Nicolas Charão</div></div>
+      <div class="pal-card"><img src="img/palestrantes/giullya-becker.png" alt="Giullya Becker"><div class="name">Giullya Becker</div></div>
+      <div class="pal-card"><img src="img/palestrantes/carolina-lima.png" alt="Carolina Lima"><div class="name">Carolina Lima</div></div>
+      <div class="pal-card"><img src="img/palestrantes/roberto-reis.png" alt="Roberto Reis"><div class="name">Roberto Reis</div></div>
+      <div class="pal-card"><img src="img/palestrantes/afranio-soares.png" alt="Afrânio Soares"><div class="name">Afrânio Soares</div></div>
+      <div class="pal-card"><img src="img/palestrantes/breno-maciel.png" alt="Breno Maciel"><div class="name">Breno Maciel</div></div>
+      <div class="pal-card"><img src="img/palestrantes/carlos-oshiro.png" alt="Carlos Oshiro"><div class="name">Carlos Oshiro</div></div>
+      <div class="pal-card"><img src="img/palestrantes/chay-santos.png" alt="Chay Santos"><div class="name">Chay Santos</div></div>
+      <!-- conjunto 2 (duplicado pro loop) -->
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/joao-branco.png" alt=""><div class="name">João Branco</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/joao-kepler.png" alt=""><div class="name">João Kepler</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/netao-bom-beef.png" alt=""><div class="name">Netão Bom Beef</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/fernando-miranda.png" alt=""><div class="name">Fernando Miranda</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/nicolas-charao.png" alt=""><div class="name">Nicolas Charão</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/giullya-becker.png" alt=""><div class="name">Giullya Becker</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/carolina-lima.png" alt=""><div class="name">Carolina Lima</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/roberto-reis.png" alt=""><div class="name">Roberto Reis</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/afranio-soares.png" alt=""><div class="name">Afrânio Soares</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/breno-maciel.png" alt=""><div class="name">Breno Maciel</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/carlos-oshiro.png" alt=""><div class="name">Carlos Oshiro</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/chay-santos.png" alt=""><div class="name">Chay Santos</div></div>
+    </div>
+  </div>
+
+  <!-- Stream 2 — direita (11 palestrantes, lista duplicada pra loop seamless) -->
+  <div class="pal-stream">
+    <div class="pal-track pal-track--right">
+      <!-- conjunto 1 -->
+      <div class="pal-card"><img src="img/palestrantes/flavia-sausmikat.png" alt="Flávia Sausmikat"><div class="name">Flávia Sausmikat</div></div>
+      <div class="pal-card"><img src="img/palestrantes/fabricio-alva.png" alt="Fabricio Alva"><div class="name">Fabricio Alva</div></div>
+      <div class="pal-card"><img src="img/palestrantes/rafael-liporace.png" alt="Rafael Liporace"><div class="name">Rafael Liporace</div></div>
+      <div class="pal-card"><img src="img/palestrantes/carol-guerra.png" alt="Carol Guerra"><div class="name">Carol Guerra</div></div>
+      <div class="pal-card"><img src="img/palestrantes/fernan-bravo.png" alt="Fernan Bravo"><div class="name">Fernan Bravo</div></div>
+      <div class="pal-card"><img src="img/palestrantes/gisele-oshiro.png" alt="Gisele Oshiro"><div class="name">Gisele Oshiro</div></div>
+      <div class="pal-card"><img src="img/palestrantes/magno-rodrigues.png" alt="Magno Rodrigues"><div class="name">Magno Rodrigues</div></div>
+      <div class="pal-card"><img src="img/palestrantes/suelen-scop.png" alt="Suelen Scop"><div class="name">Suelen Scop</div></div>
+      <div class="pal-card"><img src="img/palestrantes/roberta-veras.png" alt="Roberta Veras"><div class="name">Roberta Veras</div></div>
+      <div class="pal-card"><img src="img/palestrantes/thales-schincariol.png" alt="Thales Schincariol"><div class="name">Thales Schincariol</div></div>
+      <div class="pal-card"><img src="img/palestrantes/guto-galamba.png" alt="Guto Galamba"><div class="name">Guto Galamba</div></div>
+      <!-- conjunto 2 (duplicado pro loop) -->
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/flavia-sausmikat.png" alt=""><div class="name">Flávia Sausmikat</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/fabricio-alva.png" alt=""><div class="name">Fabricio Alva</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/rafael-liporace.png" alt=""><div class="name">Rafael Liporace</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/carol-guerra.png" alt=""><div class="name">Carol Guerra</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/fernan-bravo.png" alt=""><div class="name">Fernan Bravo</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/gisele-oshiro.png" alt=""><div class="name">Gisele Oshiro</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/magno-rodrigues.png" alt=""><div class="name">Magno Rodrigues</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/suelen-scop.png" alt=""><div class="name">Suelen Scop</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/roberta-veras.png" alt=""><div class="name">Roberta Veras</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/thales-schincariol.png" alt=""><div class="name">Thales Schincariol</div></div>
+      <div class="pal-card" aria-hidden="true"><img src="img/palestrantes/guto-galamba.png" alt=""><div class="name">Guto Galamba</div></div>
+    </div>
+  </div>
+
+  <p class="pal-counter">E ainda vem mais. Esses são os <strong>23 primeiros</strong> de +40 nomes que vão pisar no palco.</p>
+
+  <div class="palestrantes-cta">
+    <a href="#oferta" class="btn btn-primary">Quero estar nessa sala</a>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 6 — PROVA SOCIAL DSX 2025
+     6A números · 6B galeria · 6C depoimentos PRINTS (não vídeo)
+     ==================================================================== -->
+<section class="prova">
+  <div class="prova-inner">
+    <div class="prova-head">
+      <div class="small-label">Prova · 1ª edição</div>
+      <h2>Em 2025, a cidade<br><em>parou pra ver.</em></h2>
+      <p class="prova-sub">A primeira edição do DSX lotou o Vasco Vasques. Agora a aposta dobrou. Quem foi, voltou. Quem não foi, perdeu.</p>
+    </div>
+
+    <!-- 6A — Números do DSX 2025 -->
+    <div class="prova-numeros">
+      <div class="prova-num">
+        <div class="big">+2.083</div>
+        <div class="label">Pessoas no evento</div>
+      </div>
+      <div class="prova-num">
+        <div class="big">+40</div>
+        <div class="label">Palestrantes</div>
+      </div>
+      <div class="prova-num">
+        <div class="big">11,8M</div>
+        <div class="label">Impactos digitais</div>
+      </div>
+      <div class="prova-num">
+        <div class="big">2 dias</div>
+        <div class="label">Sold out completo</div>
+      </div>
+    </div>
+
+    <!-- 6B — Galeria editorial bento (placeholder pra fotos reais 2025) -->
+    <div class="galeria-head">
+      <h3>O que aconteceu lá dentro.</h3>
+      <span class="mono small-label" style="color: var(--text-mute);">Edição 2025 · Vasco Vasques</span>
+    </div>
+    <!--
+      GALERIA — mix de vídeo e foto.
+      Pra cada bloco, escolha 1 das 3 opções:
+      A) <video src="..." autoplay muted loop playsinline></video> (b-roll/aftermovie · sem áudio)
+      B) <img src="..." alt="..."> (foto estática)
+      C) deixar só o gradient placeholder com label (preencher depois)
+    -->
+    <div class="galeria">
+      <!-- Bloco 1 — wide. Sugestão: vídeo aftermovie do palco -->
+      <div class="media wide has-video">
+        <!-- <video src="img/galeria/2025-palco.mp4" autoplay muted loop playsinline poster="img/galeria/2025-palco-poster.jpg"></video> -->
+        <span class="label">Palco · aftermovie</span>
+      </div>
+      <!-- Bloco 2 — tall. Sugestão: foto da plateia lotada (impacto de "2.083") -->
+      <div class="media tall">
+        <!-- <img src="img/galeria/2025-plateia.jpg" alt="Plateia DSX 2025"> -->
+        <span class="label">Plateia · 2.083 pessoas</span>
+      </div>
+      <!-- Bloco 3 — médio. Sugestão: vídeo do networking (movimento + dimensão) -->
+      <div class="media has-video">
+        <!-- <video src="img/galeria/2025-networking.mp4" autoplay muted loop playsinline></video> -->
+        <span class="label">Networking · vídeo</span>
+      </div>
+      <!-- Bloco 4 — médio. Sugestão: foto do painel principal -->
+      <div class="media">
+        <!-- <img src="img/galeria/2025-painel.jpg" alt="Painel keynote DSX 2025"> -->
+        <span class="label">Painel · keynote</span>
+      </div>
+      <!-- Bloco 5 — wide. Sugestão: vídeo de abertura ou vista geral -->
+      <div class="media wide has-video">
+        <!-- <video src="img/galeria/2025-abertura.mp4" autoplay muted loop playsinline></video> -->
+        <span class="label">Abertura · 2 dias de imersão</span>
+      </div>
+    </div>
+
+    <!--
+      6C — DEPOIMENTOS — 2 formatos suportados:
+      [VÍDEO]  vertical 9:16 (estilo Reels/Stories) — capturados ao vivo no DSX 2025
+      [PRINT]  bolha WhatsApp/DM — texto + assinatura
+      Misturar formatos é ok. Use o que tiver melhor por participante.
+    -->
+    <div class="depoimentos">
+      <h3>O que disseram quem foi.</h3>
+      <p class="depoimentos-sub">Capturados ao vivo no DSX 2025. Sem roteiro, sem produção. Quem foi, quem viu, quem fechou negócio.</p>
+
+      <div class="depo-row">
+        <!-- Card 1 — VÍDEO -->
+        <div class="depo-card">
+          <div class="depo-video-wrap placeholder">
+            <!-- Trocar por: <video src="img/depoimentos/2025-depo-1.mp4" controls poster="img/depoimentos/2025-depo-1-poster.jpg" playsinline></video> -->
+            [vídeo · 15-30s · vertical 9:16]
+          </div>
+          <div class="autor"><span class="avatar"></span><div><strong>[Nome]</strong><br>[Nicho · Manaus]</div></div>
+        </div>
+
+        <!-- Card 2 — VÍDEO -->
+        <div class="depo-card">
+          <div class="depo-video-wrap placeholder">
+            <!-- Trocar por <video> com src real -->
+            [vídeo · 15-30s · vertical 9:16]
+          </div>
+          <div class="autor"><span class="avatar"></span><div><strong>[Nome]</strong><br>[Nicho · Manaus]</div></div>
+        </div>
+
+        <!-- Card 3 — PRINT (formato alternativo, bolha WhatsApp) -->
+        <div class="depo-card">
+          <div class="depo-print">
+            [Print de WhatsApp/DM real. Ex: "Comprei o ingresso pra ouvir o [palestrante]. Saí com sócio novo. Vai entender."]
+            <div class="depo-time">21:48 ✓✓</div>
+          </div>
+          <div class="autor"><span class="avatar"></span><div><strong>[Nome]</strong><br>[Nicho · Manaus]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prova-cta">
+      <a href="#oferta" class="btn btn-primary">Garantir minha vaga em 2026</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 7 — QUEBRA DE OBJEÇÃO EMOCIONAL
+     TOM: convite pra dentro do movimento, não cobrança de ausência.
+     EVITAR: "cansou dos grandes só em SP/RJ" (coloca a pessoa fora do circuito)
+     USAR: "você quer fazer parte do que tá sendo construído aqui ou só assistir?"
+     ==================================================================== -->
+<section class="objecao">
+  <div class="container">
+    <h2>[Pergunta emocional. Ex: "Você quer fazer parte do que tá sendo construído aqui<br>ou continuar assistindo de fora?"]</h2>
+    <p>[Parágrafo 1: reconhece a dúvida em parar 2 dias da rotina]</p>
+    <p>[Parágrafo 2: vira o jogo. A rotina espera 2 dias. O DSX é uma vez por ano. As pessoas que vão estar lá são as que vão ditar o ritmo do mercado nos próximos 12 meses.]</p>
+    <p>[Parágrafo 3: fechamento. Tom intimista, profissional pra profissional do Norte. "Quem faz acontecer aqui precisa estar onde o jogo é jogado."]</p>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 8 — BÔNUS (4 mini-LPs com identidade visual DIFERENTE)
+     Regra Júnior: cada bônus parece um produto independente.
+     ==================================================================== -->
+<section class="bonus">
+  <div class="bonus-inner">
+    <div class="bonus-head">
+      <div class="small-label" style="color: var(--accent-dark);">Bônus exclusivos</div>
+      <h2>4 bônus que valem<br>mais que <em>o ingresso.</em></h2>
+      <p class="bonus-sub">Comprando agora, você leva 4 entregáveis digitais que estendem o evento muito além dos 2 dias. Tudo seu, pra usar antes, durante e depois do DSX.</p>
+      <div class="bonus-total">+R$ <strong>1.138</strong> em valor agregado · grátis no seu ingresso</div>
+    </div>
+
+    <div class="bonus-list">
+
+      <!-- BÔNUS 1 — Replay completo -->
+      <div class="bonus-item bonus-1">
+        <div class="bonus-content">
+          <div class="num">Bônus 01 · Vídeo</div>
+          <h3>Replay completo dos +40 painéis</h3>
+          <p>Não deu pra ver tudo? Sem stress. Você tem acesso vitalício à gravação dos +40 painéis do DSX 2026. Reveja quantas vezes quiser, no seu ritmo, ou compartilhe com seu time.</p>
+          <div class="bonus-preco">
+            <span class="risco">R$ 497</span>
+            <span class="free"><span>Grátis no ingresso</span></span>
+          </div>
+        </div>
+        <div class="bonus-mockup">
+          <!-- TROCAR por: <img src="img/bonus/replay-mockup.jpg" alt="Mockup laptop com replay do DSX"> -->
+          [mockup · laptop com tela do replay]
+        </div>
+      </div>
+
+      <!-- BÔNUS 2 — Workbook -->
+      <div class="bonus-item bonus-2">
+        <div class="bonus-content">
+          <div class="num">Bônus 02 · Workbook</div>
+          <h3>Workbook DSX de Implementação</h3>
+          <p>Cada uma das 5 trilhas com templates, checklists e planos de ação prontos. Tira você do "ouvi muita coisa boa" e te coloca em "implementei segunda de manhã".</p>
+          <div class="bonus-preco">
+            <span class="risco">R$ 297</span>
+            <span class="free"><span>Grátis no ingresso</span></span>
+          </div>
+        </div>
+        <div class="bonus-mockup">
+          <!-- TROCAR por: <img src="img/bonus/workbook-mockup.jpg" alt="Mockup do workbook DSX em PDF/Notion"> -->
+          [mockup · workbook PDF/Notion aberto]
+        </div>
+      </div>
+
+      <!-- BÔNUS 3 — Grupo VIP WhatsApp -->
+      <div class="bonus-item bonus-3">
+        <div class="bonus-content">
+          <div class="num">Bônus 03 · Acesso</div>
+          <h3>Grupo VIP DSX no WhatsApp</h3>
+          <p>O network não acaba dia 24/jul. Acesso a um grupo curado e moderado com quem foi ao DSX. Conexão direta, sem ruído, com decisores que tão construindo no Norte.</p>
+          <div class="bonus-preco">
+            <span class="risco">R$ 297</span>
+            <span class="free"><span>Grátis no ingresso</span></span>
+          </div>
+        </div>
+        <div class="bonus-mockup">
+          <!-- TROCAR por: <img src="img/bonus/grupo-mockup.jpg" alt="Mockup celular com grupo WhatsApp DSX"> -->
+          [mockup · celular com tela do grupo VIP]
+        </div>
+      </div>
+
+      <!-- BÔNUS 4 — Mapa de Mercado Norte -->
+      <div class="bonus-item bonus-4">
+        <div class="bonus-content">
+          <div class="num">Bônus 04 · E-book</div>
+          <h3>Mapa de Mercado Norte 2026</h3>
+          <p>Material proprietário da Digital Comunicação com dados de comportamento, consumo e tendências do empresário do Norte. Não tem na internet. Só pra quem foi ao DSX.</p>
+          <div class="bonus-preco">
+            <span class="risco">R$ 147</span>
+            <span class="free"><span>Grátis no ingresso</span></span>
+          </div>
+        </div>
+        <div class="bonus-mockup">
+          <!-- TROCAR por: <img src="img/bonus/mapa-mockup.jpg" alt="Mockup do Mapa de Mercado Norte 2026"> -->
+          [mockup · capa do e-book + páginas internas]
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bonus-cta">
+      <a href="#oferta" class="btn btn-primary">Quero o ingresso com os 4 bônus</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 9 — A OFERTA (2 PLANOS)
+     Individual vs Grupo. Anchor de valor agressivo.
+     ==================================================================== -->
+<section class="oferta" id="oferta">
+  <div class="oferta-inner">
+    <div class="oferta-head">
+      <div class="small-label" style="text-align:center;">A oferta</div>
+      <h2>Escolha seu jeito de<br><em>fazer parte.</em></h2>
+      <div class="scarcity">
+        <span class="pulse-dot"></span>
+        Lote 4 · vagas limitadas · próxima virada vai pro último lote
+      </div>
+    </div>
+
+    <div class="planos">
+
+      <!-- VIP -->
+      <div class="plano">
+        <div class="plano-eyebrow">VIP · Lote 4</div>
+        <h3>Passaporte VIP</h3>
+        <p class="plano-pitch">Pra quem quer extrair o máximo. Lounge exclusivo onde os palestrantes também estão. As conversas mais estratégicas do DSX acontecem ali.</p>
+        <div class="plano-preco">
+          <div><span class="moeda">R$</span><span class="por">1.297<span class="cents">,00</span></span></div>
+          <div class="parcela">à vista <strong>·</strong> ou em 12x de R$ 134,14</div>
+        </div>
+        <ul class="plano-itens">
+          <li class="highlight">Lounge VIP exclusivo</li>
+          <li class="highlight">Networking com decisores</li>
+          <li class="highlight">Kit premium</li>
+          <li class="highlight">Primeiras fileiras</li>
+          <li>2 dias de evento (23 e 24/jul)</li>
+          <li>Acesso aos +40 painéis</li>
+          <li>Feira de Negócios</li>
+          <li>Certificado de participação</li>
+          <li>4 bônus digitais inclusos</li>
+        </ul>
+        <a href="#" class="plano-cta">Quero o VIP</a>
+      </div>
+
+      <!-- STANDARD (destaque - mais vendido) -->
+      <div class="plano destaque">
+        <div class="plano-tag">Mais vendido</div>
+        <div class="plano-eyebrow">Standard · Lote 4</div>
+        <h3>Passaporte Standard</h3>
+        <p class="plano-pitch">A porta de entrada pro maior evento de negócios do Norte. Dois dias de imersão, +40 painéis, feira de negócios e conteúdo que você aplica na próxima segunda.</p>
+        <div class="plano-preco">
+          <div><span class="moeda">R$</span><span class="por">697<span class="cents">,00</span></span></div>
+          <div class="parcela">à vista <strong>·</strong> ou em 12x de R$ 59,52</div>
+        </div>
+        <ul class="plano-itens">
+          <li>2 dias de evento (23 e 24/jul)</li>
+          <li>Acesso aos +40 painéis</li>
+          <li>Feira de Negócios</li>
+          <li>Certificado de participação</li>
+          <li class="highlight">4 bônus digitais inclusos</li>
+        </ul>
+        <a href="#" class="plano-cta">Quero o Standard</a>
+      </div>
+
+      <!-- GRUPO -->
+      <div class="plano">
+        <div class="plano-eyebrow">Grupo · Condição especial</div>
+        <h3>Passaporte em Grupo</h3>
+        <p class="plano-pitch">Trazer o time é investimento direto em performance. Eles voltam com repertório, visão e ferramentas pra gerar mais resultado.</p>
+        <div class="plano-talk">
+          <div class="plano-talk-eyebrow">Quanto maior o grupo, maior o desconto</div>
+          <p class="plano-talk-pitch">A partir de <strong>5 pessoas</strong>, condição comercial direta com nosso time.</p>
+        </div>
+        <ul class="plano-itens">
+          <li>Passaportes Standard pra todo o grupo</li>
+          <li>2 dias de evento (23 e 24/jul)</li>
+          <li>Acesso aos +40 painéis</li>
+          <li>Feira de Negócios</li>
+          <li>Certificados pra todos</li>
+          <li class="highlight">4 bônus digitais pra cada</li>
+        </ul>
+        <a href="https://wa.me/5592985723838" class="plano-cta">Falar com nosso time</a>
+        <p class="plano-extra">5p · 5% off  ·  10p · 10% off  ·  +10p · condição exclusiva</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 10 — GARANTIA / RISCO ZERO
+     Selo + política curta.
+     ==================================================================== -->
+<section class="garantia">
+  <div class="container">
+    <div class="selo">7 DIAS<br>RISCO ZERO</div>
+    <h2>Imprevisto acontece.</h2>
+    <p>Se você comprou e teve algum imprevisto, pode pedir seu reembolso em até <strong>7 dias após a compra</strong> do passaporte. Simples assim.</p>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 11 — QUEM ORGANIZA (REFORÇO DE PERTENCIMENTO)
+     TOM: é gente daqui que faz. Por isso o evento tem cara daqui.
+     ==================================================================== -->
+<section class="organiza">
+  <div class="container">
+    <div class="small-label">Quem faz acontecer</div>
+    <h2>Feito por gente daqui.<br>Por isso tem cara daqui.</h2>
+    <div class="organiza-card">
+      <h3>Digital Comunicação</h3>
+      <p>[Histórico: agência manauara, X anos no mercado, time DAQUI. Reforçar origem regional.]</p>
+      <p>[Números agregados: 3.700+ profissionais impactados em 2025 (DSX + Amazon IA). O movimento que tá nascendo no Norte.]</p>
+      <p class="placeholder">[Logos de patrocinadores e parceiros 2026. Preferência por marcas locais visíveis]</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 12 — CTA FINAL
+     TOM: convite pra dentro do movimento.
+     ==================================================================== -->
+<section class="cta-final">
+  <div class="container">
+    <h2>23 e 24 de julho.<br><em>Você dentro do movimento.</em></h2>
+    <div class="resumo">
+      <div><span>47</span> palestrantes</div>
+      <div><span>2</span> dias</div>
+      <div><span>2.083</span> em 2025</div>
+      <div><span>4</span> bônus</div>
+    </div>
+    <div class="ctas">
+      <a href="#oferta" class="btn btn-primary btn-block">Quero estar dentro · R$ 497</a>
+      <a href="#oferta" class="btn btn-secondary btn-block">Levar meu time · R$ 1.985</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 13 — FAQ
+     Reduzir fricção. Suporte WhatsApp INLINE aqui (discreto).
+     ==================================================================== -->
+<section class="faq">
+  <div class="container">
+    <div class="small-label">Perguntas frequentes</div>
+    <h2>Antes de comprar, talvez você queira saber:</h2>
+
+    <details class="faq-item">
+      <summary>O que é o DSX 2026?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Pra quem é o evento?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Qual a programação dos 2 dias?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Onde vai acontecer? Como chego?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Tem estacionamento? Almoço incluso?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Como recebo os bônus?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Posso parcelar? Posso pagar com PIX?</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>E se eu não puder ir? Política de reembolso</summary>
+      <p>[resposta]</p>
+    </details>
+    <details class="faq-item">
+      <summary>Como falo com o time?</summary>
+      <p>Se ficou alguma dúvida que não foi respondida aqui, fale com a gente <a href="https://wa.me/55XXXXX">por aqui</a>. Resposta em até 24h em horário comercial.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SEÇÃO 14 — FOOTER (SUPORTE DISCRETO — sem ícone flutuante)
+     Apenas link textual. Quem realmente precisar, encontra.
+     ==================================================================== -->
+<footer>
+  <div class="container">
+    <div>DSX 2026 · 23 e 24 de Julho · Manaus/AM</div>
+    <div class="footer-links">
+      <a href="#">Política de Privacidade</a>
+      <a href="#">Termos de Uso</a>
+      <a href="https://wa.me/55XXXXX">Contato</a>
+    </div>
+    <div>© 2026 Digital Comunicação · CNPJ XX.XXX.XXX/0001-XX</div>
+  </div>
+</footer>
+
+</body>
+</html>
